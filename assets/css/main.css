@@ -2834,6 +2834,10 @@ input, select, textarea {
 			font-size: 1rem;
 		}
 
+		#footer .icons.alt {
+			margin-left: 3rem; /* 或根据需要改成更大的值 */
+		  }
+
 /* List */
 
 	ol {
@@ -4240,8 +4244,9 @@ input, select, textarea {
 					-moz-align-items: center;
 					-webkit-align-items: center;
 					-ms-align-items: center;
-					align-items: center;
+					align-items: flex-start;
 					padding: 3.15rem 4rem;
+					gap: 2rem; /* 💡 加这一句，控制左右间距 */
 				}
 
 					#footer > section.split.contact > section > * {
@@ -4766,25 +4771,11 @@ input, select, textarea {
 /* 介绍list */
 	
 /* 缩小段落和列表之间间距 */
-	p {
-		margin-bottom: 0.5rem;
+	p + .compact-list {
+		margin-top: 0.2rem;  /* 减少 p 与 ul 的距离 */
 	}
-	
-	/* 列表整体压紧一点 */
-	ul.compact-list {
-		margin-top: 0.2rem;
-		line-height: 1.4;
-		padding-left: 1.2rem;
-	}
-	
-	ul.compact-list li {
-		margin-bottom: 0.3rem;
-	}
-	
-	/* 让 footer h3 显得更宽 */
-	#footer h3 {
-		display: inline-block;
-		white-space: nowrap;
-		padding-right: 1rem;
-		font-size: 1rem;
+
+	.compact-list li {
+		margin-bottom: 0.8rem; /* 可选：减少 li 之间的垂直间距 */
+		line-height: 1.7;       /* 可选：提升可读性，行内行距更舒展 */
 	}
