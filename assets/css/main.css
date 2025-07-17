@@ -4249,7 +4249,7 @@ input, select, textarea {
 					}
 
 					#footer > section.split.contact > section > p {
-						margin-left: 2rem;  /* 根据需要改成 1.5rem / 3rem 等 */
+						margin-left: 4rem;  /* 根据需要改成 1.5rem / 3rem 等 */
 					  }
 
 					#footer > section.split.contact > section > :first-child {
@@ -4700,7 +4700,7 @@ input, select, textarea {
 		margin: 3rem auto; /* 水平居中 + 下拉 */
 		border-radius: 10px;
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-		max-width: 1200px; /* 与 .post 保持一致宽度 */
+		max-width: 1150px; /* 与 .post 保持一致宽度 */
 	}
 	
 	.resume-wrapper h2 {
@@ -4750,6 +4750,18 @@ input, select, textarea {
 		background-color: #9b59b6; /* 紫色 */
 	  }
 
+/* intro 不要斜体 */
 	  p.intro {
 		font-style: normal;
+	  }
+
+/* 介绍list */
+	
+	  .compact-list {
+		line-height: 1.4;
+		margin: 0;
+		padding-left: 1.2rem; /* 控制左侧缩进 */
+	  }
+	  .compact-list li {
+		margin-bottom: 0.3rem;
 	  }
