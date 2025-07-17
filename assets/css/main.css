@@ -4295,7 +4295,15 @@ input, select, textarea {
 						}
 
 		#footer form label,
-		#footer h3,
+		#footer h3 {
+			display: inline-block;   /* 避免被容器限制宽度 */
+			white-space: nowrap;     /* 强制不换行 */
+			width: auto;
+			max-width: 100%;
+			padding-right: 1rem;   /* 右边留点空 */
+			font-size: 1rem;        /* 或调大字体 */
+		  }
+
 		#footer p {
 			font-size: 0.8rem;
 		}
@@ -4757,11 +4765,26 @@ input, select, textarea {
 
 /* 介绍list */
 	
-	  .compact-list {
+/* 缩小段落和列表之间间距 */
+	p {
+		margin-bottom: 0.5rem;
+	}
+	
+	/* 列表整体压紧一点 */
+	ul.compact-list {
+		margin-top: 0.2rem;
 		line-height: 1.4;
-		margin: 0;
-		padding-left: 1.2rem; /* 控制左侧缩进 */
-	  }
-	  .compact-list li {
-		margin-bottom: 0.1rem;
-	  }
+		padding-left: 1.2rem;
+	}
+	
+	ul.compact-list li {
+		margin-bottom: 0.3rem;
+	}
+	
+	/* 让 footer h3 显得更宽 */
+	#footer h3 {
+		display: inline-block;
+		white-space: nowrap;
+		padding-right: 1rem;
+		font-size: 1rem;
+	}
