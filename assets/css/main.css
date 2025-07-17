@@ -2631,12 +2631,12 @@ input, select, textarea {
 			.image.fit img {
 				width: 100%;
 			}
-			
+
 			.image.main img {
-				width: 200px;
-				height: auto;
-				display: block;
-				margin: 0 auto;
+				width: 150px;
+				height: auto; /* 保持等比例缩小 */
+				border-radius: 50%; /* 做成圆形 */
+				object-fit: cover; /* 控制图片填充方式 */
 			}
 
 			.image.main:first-child {
