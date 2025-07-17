@@ -4744,3 +4744,7 @@ input, select, textarea {
 	  .tag-extracurricular {
 		background-color: #9b59b6; /* 紫色 */
 	  }
+
+	  p.intro {
+		font-style: normal;
+	  }
