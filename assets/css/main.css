@@ -4287,7 +4287,7 @@ input, select, textarea {
 					}
 
 						#footer > section.split.contact > section.alt > :last-child {
-							margin-top: -0.325rem;
+							margin-top: 3rem;
 						}
 
 		#footer form label,
@@ -4693,10 +4693,11 @@ input, select, textarea {
 	.resume-wrapper {
 		background-color: white;
 		padding: 2rem;
-		margin-top: 3rem; /* 整体下拉 */
+		margin: 3rem auto; /* 水平居中 + 下拉 */
 		border-radius: 10px;
-		box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* 可选：加点柔和阴影 */
-	  }
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+		max-width: 1100px; /* 与 .post 保持一致宽度 */
+	}
 	
 	.resume-wrapper h2 {
 		margin-top: 0;
