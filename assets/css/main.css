@@ -4776,6 +4776,6 @@ input, select, textarea {
 	}
 
 	.compact-list li {
-		margin-bottom: 1.5rem; /* 可选：减少 li 之间的垂直间距 */
+		margin-bottom: 1rem; /* 可选：减少 li 之间的垂直间距 */
 		line-height: 1.7;       /* 可选：提升可读性，行内行距更舒展 */
 	}
