@@ -4700,7 +4700,7 @@ input, select, textarea {
 		margin: 3rem auto; /* 水平居中 + 下拉 */
 		border-radius: 10px;
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-		max-width: 1150px; /* 与 .post 保持一致宽度 */
+		max-width: 1100px; /* 与 .post 保持一致宽度 */
 	}
 	
 	.resume-wrapper h2 {
@@ -4763,5 +4763,5 @@ input, select, textarea {
 		padding-left: 1.2rem; /* 控制左侧缩进 */
 	  }
 	  .compact-list li {
-		margin-bottom: 0.3rem;
+		margin-bottom: 0.1rem;
 	  }
