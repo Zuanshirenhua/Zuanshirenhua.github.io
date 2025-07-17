@@ -2920,7 +2920,7 @@ input, select, textarea {
 		}
 
 		header > p {
-			font-style: italic;
+			font-style: normal;
 		}
 
 		header > h1 + p {
@@ -3392,7 +3392,7 @@ input, select, textarea {
 
 		#intro p {
 			font-size: 1.25rem;
-			font-style: italic;
+			font-style: normal;
 			margin-top: -0.25rem;
 			text-align: center;
 		}
@@ -4687,3 +4687,64 @@ input, select, textarea {
 		}
 
 	}
+
+/* Resume section */
+
+	.resume-wrapper {
+		background-color: white;
+		padding: 2rem;
+		margin-top: 3rem; /* 整体下拉 */
+		border-radius: 10px;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* 可选：加点柔和阴影 */
+	  }
+	
+	.resume-wrapper h2 {
+		margin-top: 0;
+		font-size: 1.5rem;
+		font-weight: 700;
+		text-align: center;
+		margin-bottom: 1.5rem;
+	}
+
+	.resume-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	  
+	.resume-table td, .resume-table th {
+		padding: 0.75rem;
+		border-bottom: 1px solid #ddd;
+		text-align: left;
+	}
+
+/* Resume tag */
+	.tag {
+		display: inline-block;
+		padding: 0.2em 0.6em;
+		font-size: 0.9em;
+		font-weight: 500;
+		border-radius: 999px;
+		color: white;
+		white-space: nowrap;
+	  }
+	  
+	  /* 分类颜色自定义 */
+	  .tag-project {
+		background-color: #4a90e2; /* 蓝色 */
+	  }
+	  
+	  .tag-intern {
+		background-color: #27ae60; /* 绿色 */
+	  }
+	  
+	  .tag-volunteer {
+		background-color: #e67e22; /* 橙色 */
+	  }
+	  
+	  .tag-extracurricular {
+		background-color: #9b59b6; /* 紫色 */
+	  }
+
+	  p.intro {
+		font-style: normal;
+	  }
