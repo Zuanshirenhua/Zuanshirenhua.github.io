@@ -2638,6 +2638,7 @@ input, select, textarea {
 				object-fit: contain; /* 控制图片填充方式 */
 				max-width: 30%;
 				margin: 0 auto;      /* 图片居中 */
+				margin-top: -20px;
 			}
 
 			.image.main:first-child {
