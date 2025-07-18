@@ -2636,7 +2636,7 @@ input, select, textarea {
 				width: 10px;
 				height: auto; /* 保持等比例缩小 */
 				object-fit: contain; /* 控制图片填充方式 */
-				max-width: 50%;
+				max-width: 30%;
 				margin: 0 auto;      /* 图片居中 */
 			}
 
