@@ -262,8 +262,8 @@
 $(document).ready(function() {
 // 初始化翻页书
 $('#book').turn({
-	width: 600,
-	height: 400,
+	width: 800,
+	height: 600,
 	autoCenter: true
 });
 
