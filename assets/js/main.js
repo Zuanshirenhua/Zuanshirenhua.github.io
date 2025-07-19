@@ -259,22 +259,24 @@
 
 
 
-$(document).ready(function() {
-// 初始化翻页书
-$('#book').turn({
-	width: 800,
-	height: 600,
-	autoCenter: true
-});
-
-// 打开书本
-$('#openBook').click(function(e) {
-	e.preventDefault();
-	$('#bookModal').fadeIn();
-});
-
-// 关闭书本
-$('#closeBook').click(function() {
-	$('#bookModal').fadeOut();
-});
-});
+$(document).ready(function () {
+	// 初始化翻页书
+	$('#book').turn({
+	  width: 1000,
+	  height: 600,
+	  autoCenter: true,
+	  gradients: true,
+	  elevation: 50
+	});
+  
+	// 打开书本
+	$('#openBook').click(function (e) {
+	  e.preventDefault();
+	  $('#bookModal').fadeIn();
+	});
+  
+	// 关闭书本
+	$('#closeBook').click(function () {
+	  $('#bookModal').fadeOut();
+	});
+  });
