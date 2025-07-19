@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Massively by HTML5 UP</title>
+		<title>yry的赛博人生房间</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -47,12 +47,12 @@
 									<span class="date">July 18, 2025</span>
 									<h2><a href="#">探索世界<br />
 									进度1%</a></h2>
-									<p>人不应该是插在花瓶里供人观赏的静物，而是蔓延在草原上随风起舞的韵律。<br />
+									<p class= "intro">人不应该是插在花瓶里供人观赏的静物，而是蔓延在草原上随风起舞的韵律。<br />
 									生命不是安排，而是追求，人生的意义也许永远没有答案，但也要尽情感受这种没有答案的人生。</p>
 								</header>
 								<a href="#" class="image main"><img src="images/hobbiehead.jpg" alt="" /></a>
 								<ul class="actions special">
-									<li><a href="#" class="button large">我的「三分钟热度」概览</a></li>
+									<li><a href="#bookModal" class="button large" id="openBook">我的「三分钟热度」概览</a></li>
 								</ul>
 							</article>
 
@@ -137,13 +137,13 @@
 								<div class="pagination">
 									<!--<a href="#" class="previous">Prev</a>-->
 									<a href="hobbies.html" class="page active">1</a>
-									<a href="hobbies2.html" class="next">Next</a>
+									<a href="hobbies2.html" class="page">2</a>
 									<a href="#" class="page">3</a>
 									<span class="extra">&hellip;</span>
 									<a href="#" class="page">8</a>
 									<a href="#" class="page">9</a>
 									<a href="#" class="page">10</a>
-									<a href="#" class="next">Next</a>
+									<a href="hobbies2.html" class="next">Next</a>
 								</div>
 							</footer>
 
@@ -151,10 +151,21 @@
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; Ruyan Yu</li><li>Design: Ruyan Yu</li></ul>
 					</div>
 
 			</div>
+	
+			<div id="bookModal" style="display:none; position:fixed; top:5%; left:50%; transform:translateX(-50%); background:white; padding:20px; box-shadow:0 0 20px rgba(0,0,0,0.3); z-index:9999;">
+				<div id="book" style="width:600px; height:400px;">
+				  <div class="page">第一页内容</div>
+				  <div class="page">第二页内容</div>
+				  <div class="page">第三页内容</div>
+				  <div class="page">第四页内容</div>
+				</div>
+				<br>
+				<button id="closeBook">关闭</button>
+			  </div>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
@@ -164,6 +175,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/turn.min.js"></script>
 
 	</body>
 </html>
