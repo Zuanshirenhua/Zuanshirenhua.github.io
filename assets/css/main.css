@@ -199,6 +199,7 @@ input, select, textarea {
 		font-size: 4rem;
 		line-height: 1.1;
 		margin: 0 0 2rem 0;
+		white-space: pre-line;
 	}
 
 	h2 {
@@ -3496,6 +3497,11 @@ input, select, textarea {
 				}
 
 		}
+
+		.intro {
+			white-space: pre-line; /* 保留手动换行 */
+			text-align: center;    /* 居中对齐（可选） */
+		  }
 
 /* Header */
 
