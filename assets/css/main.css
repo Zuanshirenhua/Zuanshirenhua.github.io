@@ -206,6 +206,7 @@ input, select, textarea {
 		font-size: 1.75rem;
 		line-height: 1.3;
 		margin: 0 0 1.5rem 0;
+		white-space: pre-line;
 	}
 
 	h3 {
@@ -4787,4 +4788,21 @@ input, select, textarea {
 	.compact-list li {
 		margin-bottom: 1rem; /* 可选：减少 li 之间的垂直间距 */
 		line-height: 1.7;       /* 可选：提升可读性，行内行距更舒展 */
+	}
+
+
+/* 翻页书本 */
+	#book {
+		width: 600px;
+		height: 400px;
+	  }
+	  
+	#book .page {
+	width: 300px;
+	height: 400px;
+	background: white;
+	border: 1px solid #ccc;
+	text-align: center;
+	line-height: 400px;
+	font-size: 20px;
 	}
