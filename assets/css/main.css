@@ -99,13 +99,10 @@ input, select, textarea {
 	}
 
 	body {
-		background: url("images/background.jpg") no-repeat center center fixed !important;
-		background-size: cover !important;
+		background-color: #708160; /* fallback 深色背景，如果图片加载失败 */
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
-			background: url("images/background.jpg") no-repeat center center fixed !important;
-			background-size: cover !important;
 			-moz-animation: none !important;
 			-webkit-animation: none !important;
 			-ms-animation: none !important;
@@ -3246,7 +3243,7 @@ input, select, textarea {
 			width: 100%;
 			height: 100%;
 			background-color: #212931;
-			background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/bg.jpg");
+			background-image: url("images/background.jpg"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("images/background.jpg");
 			background-size: auto,								auto,														100% auto;
 			background-position: center,								center,														top center;
 			background-repeat: repeat,								no-repeat,													no-repeat;
@@ -4847,9 +4844,3 @@ input, select, textarea {
 		align-items: center;
 		justify-content: center;
 	  }
-
-	  body, html {
-		background: url("images/background.jpg") no-repeat center center fixed !important;
-		background-size: cover !important;
-		background-color: transparent !important;
-	}
