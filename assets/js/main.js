@@ -270,8 +270,13 @@ $(document).ready(function () {
 					autoCenter: true,
 					display: 'single',
 					gradients: true,
-					acceleration: true
-				});
+					acceleration: true,
+					when: {
+					  turning: function(event, page, view) {
+						console.log("Turning to page:", page);
+					  }
+					}
+				  });
 				$('.book').data('done', true);
 			}
 		});
