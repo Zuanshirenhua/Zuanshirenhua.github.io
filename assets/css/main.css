@@ -99,7 +99,8 @@ input, select, textarea {
 	}
 
 	body {
-		background-color: #1e252d;
+		background: url("images/background.jpg") no-repeat center center fixed;
+		background-size: cover;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
