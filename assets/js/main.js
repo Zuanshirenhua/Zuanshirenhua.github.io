@@ -280,7 +280,11 @@ $(document).ready(function () {
 							}
 						}
 					}
-				});
+				}); // ⬅️ ⬅️ ⬅️ 这里是缺失的闭合括号
+				$('.book').data('done', true);
+			}
+		});
+	});
 
 	$('#closeBook').on('click', function () {
 		$('#bookModal').fadeOut();
