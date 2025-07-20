@@ -350,9 +350,9 @@ function typeText(elementId, text, delay = 100, callback = null) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-	typeText("typing-cn", "这里是YRY的乌托邦", 150, () => {
-		typeText("typing-en", "HIYA, I'M RUYAN YU", 150, () => {
-			typeText("typing-sub", "欢迎光临，我的世界。", 120);
+	typeText("typing-cn", "这里是YRY的乌托邦", 120, () => {
+		typeText("typing-en", "HIYA, I'M RUYAN YU", 120, () => {
+			typeText("typing-sub", "欢迎光临，我的世界。", 100);
 		});
 	});
 });
