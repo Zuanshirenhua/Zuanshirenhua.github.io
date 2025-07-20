@@ -272,12 +272,13 @@ $(document).ready(function () {
 					acceleration: true,
 					when: {
 						turning: function (event, page) {
-							// 进入双页时放大容器
-							if (page === 2) {
-								$('.book').css('width', '900px');
-							} else {
-								$('.book').css('width', '450px');
-							}
+						  if (page === 2) {
+							$('.book').css('width', '900px');
+							$('#bookModal').css('width', '900px'); // ✅ 父容器也要撑开
+						  } else {
+							$('.book').css('width', '450px');
+							$('#bookModal').css('width', '450px'); // ✅ 父容器恢复
+						  }
 						}
 					}
 				}); // ⬅️ ⬅️ ⬅️ 这里是缺失的闭合括号
