@@ -4807,21 +4807,13 @@ input, select, textarea {
 	}
 	
 	.book .cover img,
-	.book .end img {
+	.book .end img,
+	.book .double img {
 		width: 100%;
 		height: 100%;
 		display: block;
 	}
-	
-	.book .double img {
-		width: 200%;              /* 显示双页图 */
-		margin-left: -50%;        /* 向左偏移实现“居中”双页 */
-		height: 100%;
-		display: block;
-		user-select: none;
-		pointer-events: none;
-		object-fit: cover; /* 可选：防止失真 */
-	}
+
 
 	#bookModal {
 		position: fixed;
