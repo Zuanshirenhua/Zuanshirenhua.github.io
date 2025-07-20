@@ -264,13 +264,22 @@ $(document).ready(function () {
 		$('#bookModal').fadeIn(() => {
 			if (!$('.book').data('done')) {
 
-				// ✅ 动态插入页数（在初始化前）
+					// 清空旧内容（防止多次打开重复）
+				$('.book').empty();
+
+				// 添加封面
+				$('.book').append('<div class="page cover"><img src="images/coverpage.png" /></div>');
+
+				// 添加多个空白页（每次两页）
 				for (let i = 0; i < 5; i++) {
 					$('.book').append(`
 						<div class="page double"><img src="images/emptyleft.png" /></div>
 						<div class="page double"><img src="images/emptyright.png" /></div>
 					`);
 				}
+
+				// 添加固定的最后一页
+				$('.book').append('<div class="page end"><img src="images/endpage.png" /></div>');
 
 				// ✅ turn.js 初始化
 				$('.book').turn({
