@@ -262,7 +262,6 @@
 $(document).ready(function () {
 	$('#openBook').on('click', function () {
 		$('#bookModal').fadeIn(() => {
-			// ✅ fadeIn 动画结束后才执行 turn.js 初始化
 			if (!$('.book').data('done')) {
 				$('.book').turn({
 					width: 450,
@@ -270,20 +269,23 @@ $(document).ready(function () {
 					autoCenter: true,
 					display: 'single',
 					gradients: true,
-					acceleration: true,
-					when: {
-					  turning: function(event, page, view) {
-						console.log("Turning to page:", page);
-					  }
-					}
+					acceleration: true
 				});
-				$('.book').turn('disable', false);  // ✅ 强制启用交互
-				$('.book').data('done', true);      // ✅ 标记已初始化
+				$('.book').data('done', true);
 			}
 		});
 	});
 
 	$('#closeBook').on('click', function () {
 		$('#bookModal').fadeOut();
+	});
+
+	// 左右箭头控制翻页
+	$('#prevPage').on('click', function () {
+		$('.book').turn('previous');
+	});
+
+	$('#nextPage').on('click', function () {
+		$('.book').turn('next');
 	});
 });
