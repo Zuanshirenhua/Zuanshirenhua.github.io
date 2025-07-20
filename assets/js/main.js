@@ -276,8 +276,9 @@ $(document).ready(function () {
 						console.log("Turning to page:", page);
 					  }
 					}
-				  });
-				$('.book').data('done', true);
+				});
+				$('.book').turn('disable', false);  // ✅ 强制启用交互
+				$('.book').data('done', true);      // ✅ 标记已初始化
 			}
 		});
 	});
