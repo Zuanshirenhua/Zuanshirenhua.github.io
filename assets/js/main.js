@@ -267,10 +267,10 @@ $(document).ready(function () {
 					width: 450,
 					height: 600,
 					autoCenter: true,
-					display: 'single',
+					display: 'double',
 					gradients: true,
 					acceleration: true
-				}); // ⬅️ ⬅️ ⬅️ 这里是缺失的闭合括号
+				}); 
 				$('.book').data('done', true);
 			}
 		});
