@@ -158,7 +158,7 @@
 	
 			<!-- 书本弹窗容器 -->
 			<div id="bookModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); z-index:999;">
-				<div class="book" onclick="flipBook()">
+				<div class="book">
 				<div class="page cover" id="cover">
 					<img src="images/coverpage.png" alt="封面">
 				</div>
@@ -173,6 +173,16 @@
 				<button id="closeBook">关闭</button>
 			</div>
 
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/turn.min.js"></script>
+			<script src="assets/js/main.js"></script>
 			<script>
 				document.addEventListener("DOMContentLoaded", function () {
 				  document.getElementById('openBook').addEventListener('click', function(event) {
@@ -196,16 +206,6 @@
 				  });
 				});
 			  </script>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/turn.min.js"></script>
-			<script src="assets/js/main.js"></script>
 
 	</body>
 </html>
