@@ -4827,7 +4827,10 @@ input, select, textarea {
 		top: 10%;
 		left: 50%;
 		transform: translateX(-50%);
-		width: auto; /* ✅ 允许内容自动撑宽 */
-		overflow: visible; /* ✅ 确保超出部分也能显示 */
+		width: auto;             /* ✅ 自适应宽度 */
+		max-width: none;         /* ✅ 不限制最大宽度 */
+		overflow: visible;       /* ✅ 允许超出显示 */
 		z-index: 9999 !important;
-	}
+		display: flex;           /* ✅ 加 flex 居中 .book */
+		justify-content: center;
+	  }
