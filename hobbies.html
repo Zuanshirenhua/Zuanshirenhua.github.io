@@ -173,6 +173,19 @@
 				<button id="closeBook">关闭</button>
 			</div>
 
+			<script>
+				document.addEventListener("DOMContentLoaded", function () {
+				  document.getElementById('openBook').addEventListener('click', function(event) {
+					event.preventDefault();
+					document.getElementById('bookModal').style.display = 'block';
+				  });
+				
+				  document.getElementById('closeBook').addEventListener('click', function() {
+					document.getElementById('bookModal').style.display = 'none';
+				  });
+				});
+			</script>
+
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
