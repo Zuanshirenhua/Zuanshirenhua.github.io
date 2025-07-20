@@ -4794,7 +4794,7 @@ input, select, textarea {
 /* 翻页书本 */
 .book {
 	position: relative;
-	width: 500px;
+	width: 450px;
 	height: 600px;
 	perspective: 2000px;
 	margin: auto;
@@ -4832,12 +4832,3 @@ input, select, textarea {
 	background-color: white;
   }
   
-  /* 翻页动画：hover 整本书时翻页 */
-  .book:hover .cover {
-	transform: rotateY(-180deg);
-  }
-  
-  .book:hover .empty {
-	transform: rotateY(-180deg);
-	transition-delay: 0.3s;
-  }
