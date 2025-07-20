@@ -4873,4 +4873,12 @@ input, select, textarea {
 		justify-content: center;
 	  }
 
+	  .image-original img {
+		width: 200px;      /* 你可以改成 200px, 400px 等 */
+		height: auto;      /* 保持原始宽高比例 */
+		display: block;
+		margin: 1rem auto; /* 居中显示 */
+		border-radius: 8px; /* 可选：圆角 */
+	  }
+
 	  
