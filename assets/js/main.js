@@ -269,12 +269,18 @@ $(document).ready(function () {
 					autoCenter: true,
 					display: 'single',
 					gradients: true,
-					acceleration: true
+					acceleration: true,
+					when: {
+						turning: function (event, page) {
+							// 进入双页时放大容器
+							if (page === 2) {
+								$('.book').css('width', '900px');
+							} else {
+								$('.book').css('width', '450px');
+							}
+						}
+					}
 				});
-				$('.book').data('done', true);
-			}
-		});
-	});
 
 	$('#closeBook').on('click', function () {
 		$('#bookModal').fadeOut();
