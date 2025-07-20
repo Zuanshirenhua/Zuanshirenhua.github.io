@@ -4820,6 +4820,7 @@ input, select, textarea {
 		display: block;
 		user-select: none;
 		pointer-events: none;
+		object-fit: cover; /* 可选：防止失真 */
 	}
 
 	#bookModal {
