@@ -331,3 +331,27 @@ $(document).ready(function () {
 		$('.book').turn('next');
 	});
 });
+
+
+function typeText(elementId, text, delay = 100, callback = null) {
+	const el = document.getElementById(elementId);
+	el.innerHTML = '';
+	let i = 0;
+	const interval = setInterval(() => {
+		if (i < text.length) {
+			el.innerHTML += text.charAt(i);
+			i++;
+		} else {
+			clearInterval(interval);
+			if (callback) callback();
+		}
+	}, delay);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+	typeText("typing-cn", "这里是YRY的乌托邦", 100, () => {
+		typeText("typing-en", "HIYA, I'M RUYAN YU", 80, () => {
+			typeText("typing-sub", "欢迎光临，我的世界。", 60);
+		});
+	});
+});
