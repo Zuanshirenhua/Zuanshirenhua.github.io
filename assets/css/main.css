@@ -92,7 +92,8 @@ input, select, textarea {
 
 	@font-face {
 		font-family: 'QingNiaoHei';
-		src: url('/assets/webfonts/QingNiaoHuaGuangJianMeiHei-2.ttf') format('truetype');
+		src: url('/assets/webfonts/JMH.woff2') format('woff2'),
+			 url('/assets/webfonts/JMH.woff') format('woff');
 		font-display: swap;
 	  }
 	  
