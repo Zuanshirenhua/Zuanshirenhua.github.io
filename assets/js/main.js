@@ -263,13 +263,16 @@ $(document).ready(function () {
 	$('#openBook').on('click', function () {
 	  $('#bookModal').fadeIn();
   
-	  // 初始化翻页书本
-	  $('.book').turn({
-		width: 450,
-		height: 600,
-		autoCenter: true,
-		display: 'single'
-	  });
+	  // ✅ 避免重复初始化 turn.js
+	  if (!$('.book').data('done')) {
+		$('.book').turn({
+		  width: 450,
+		  height: 600,
+		  autoCenter: true,
+		  display: 'single'
+		});
+		$('.book').data('done', true); // ✅ 标记初始化完成
+	  }
 	});
   
 	$('#closeBook').on('click', function () {
