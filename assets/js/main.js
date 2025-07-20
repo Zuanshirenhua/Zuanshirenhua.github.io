@@ -259,20 +259,32 @@
 
 
 
-  // 点击“我的三分钟热度”打开书
-  document.getElementById('openBook').addEventListener('click', function(event) {
-    event.preventDefault(); // 阻止跳转锚点
-    document.getElementById('bookModal').style.display = 'block';
+document.addEventListener("DOMContentLoaded", function () {
+	// 打开书（只是显示弹窗，不翻页）
+	document.getElementById('openBook').addEventListener('click', function(event) {
+	  event.preventDefault();
+	  document.getElementById('bookModal').style.display = 'block';
+  
+	  // 不要加 flipBook()！只打开窗口
+	});
+  
+	// 关闭书（并重置翻页状态）
+	document.getElementById('closeBook').addEventListener('click', function() {
+	  document.getElementById('bookModal').style.display = 'none';
+  
+	  // 重置动画
+	  document.getElementById('cover').style.transform = '';
+	  document.getElementById('empty').style.transform = '';
+	  document.getElementById('empty').style.transitionDelay = '';
+	});
   });
-
-  // 关闭按钮
-  document.getElementById('closeBook').addEventListener('click', function() {
-    document.getElementById('bookModal').style.display = 'none';
-  });
-
-  // 翻页函数
+  
   function flipBook() {
-    document.getElementById('cover').style.transform = 'rotateY(-180deg)';
-    document.getElementById('empty').style.transform = 'rotateY(-180deg)';
-    document.getElementById('empty').style.transitionDelay = '0.3s';
+	console.log("📖 翻页！");
+	document.getElementById('cover').style.transform = 'rotateY(-180deg)';
+	document.getElementById('empty').style.transform = 'rotateY(-180deg)';
+	document.getElementById('empty').style.transitionDelay = '0.3s';
+  
+	// 也可以加一行禁用点击以防重复
+	// document.querySelector('.book').style.pointerEvents = 'none';
   }
