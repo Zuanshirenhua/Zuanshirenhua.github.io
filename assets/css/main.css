@@ -173,7 +173,7 @@ input, select, textarea {
 
 	body, input, select, textarea {
 		font-family: 'QingNiaoHei'，"Merriweather", Georgia, serif;
-		font-size: 1.25rem;       /* 原来是 1rem，提升到 1.25rem */
+		font-size: 1.1rem;       /* 原来是 1rem，提升到 1.25rem */
   		line-height: 2;           /* 原来是 2.375，可以简化为更均衡的 2 */
 		line-height: 2.375;
 	}
@@ -3830,7 +3830,7 @@ input, select, textarea {
 
 			#main > .post header.major > h1, #main > .post header.major h2 {
 				font-size: 4rem;
-				line-height: 1.1;
+				line-height: 0.8;
 				margin: 0 0 2rem 0;
 			}
 
@@ -3859,7 +3859,7 @@ input, select, textarea {
 
 					#main > .post header.major > h1, #main > .post header.major h2 {
 						font-size: 2.5rem;
-						line-height: 1.2;
+						line-height: 0.8;
 						margin: 0 0 1.5rem 0;
 					}
 
