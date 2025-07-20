@@ -4805,23 +4805,19 @@ input, select, textarea {
 		overflow: hidden;
 		background: white;
 	}
-
-	.book .cover img {
-		width: 100%;     
-		height: 100%;
-	}
-
-	.book .end img {
-		width: 100%;     
-		height: 100%;
-	}
 	
+	.book .cover img,
+	.book .end img {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
 	
 	.book .double img {
-		width: 200%;     /* 两倍宽度，撑满左右 */
-		margin-left: -50%; /* 向左偏移一半，看起来居中 */
-	}
-	
-	#bookModal {
-		z-index: 9999 !important;
+		width: 200%;              /* 显示双页图 */
+		margin-left: -50%;        /* 向左偏移实现“居中”双页 */
+		height: 100%;
+		display: block;
+		user-select: none;
+		pointer-events: none;
 	}
