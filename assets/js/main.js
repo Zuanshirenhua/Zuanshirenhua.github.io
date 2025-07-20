@@ -263,6 +263,16 @@ $(document).ready(function () {
 	$('#openBook').on('click', function () {
 		$('#bookModal').fadeIn(() => {
 			if (!$('.book').data('done')) {
+
+				// ✅ 动态插入页数（在初始化前）
+				for (let i = 0; i < 5; i++) {
+					$('.book').append(`
+						<div class="page double"><img src="images/emptyleft.png" /></div>
+						<div class="page double"><img src="images/emptyright.png" /></div>
+					`);
+				}
+
+				// ✅ turn.js 初始化
 				$('.book').turn({
 					width: 900,
 					height: 600,
@@ -270,7 +280,8 @@ $(document).ready(function () {
 					display: 'double',
 					gradients: true,
 					acceleration: true
-				}); 
+				});
+
 				$('.book').data('done', true);
 			}
 		});
@@ -280,7 +291,6 @@ $(document).ready(function () {
 		$('#bookModal').fadeOut();
 	});
 
-	// 左右箭头控制翻页
 	$('#prevPage').on('click', function () {
 		$('.book').turn('previous');
 	});
