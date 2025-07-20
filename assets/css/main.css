@@ -4794,7 +4794,7 @@ input, select, textarea {
 /* 翻页书本 */
 .book {
 	position: relative;
-	width: 400px;
+	width: 500px;
 	height: 600px;
 	perspective: 2000px;
 	margin: auto;
@@ -4807,7 +4807,7 @@ input, select, textarea {
 	border-radius: 10px;
 	box-shadow: 0 0 15px rgba(0,0,0,0.2);
 	transition: transform 1s;
-	transform-origin: left;
+	transform-origin: left center;
 	backface-visibility: hidden;
   }
   
