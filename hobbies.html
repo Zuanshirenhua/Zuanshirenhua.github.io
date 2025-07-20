@@ -156,17 +156,19 @@
 
 			</div>
 	
-			<div class="book">
-				<div class="page cover">
-				  <img src="images/coverpage.png" alt="封面">
+			<!-- 书本弹窗容器 -->
+			<div id="bookModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); z-index:999;">
+				<div class="book" onclick="flipBook()">
+				<div class="page cover" id="cover">
+					<img src="images/coverpage.png" alt="封面">
 				</div>
-				<div class="page empty">
-				  <img src="images/emptypage.PNG" alt="空白页">
+				<div class="page empty" id="empty">
+					<img src="images/emptypage.PNG" alt="空白页">
 				</div>
 				<div class="page end">
-				  <img src="images/endpage.png" alt="封底">
+					<img src="images/endpage.png" alt="封底">
 				</div>
-			</div>
+				</div>
 				<br>
 				<button id="closeBook">关闭</button>
 			</div>
