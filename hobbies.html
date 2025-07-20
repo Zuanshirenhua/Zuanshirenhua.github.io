@@ -156,12 +156,17 @@
 
 			</div>
 	
-			<div id="bookModal" style="display:none; position:fixed; top:5%; left:50%; transform:translateX(-50%); z-index:1000;">
-				<div id="book" style="width:1000px; height:600px;">
-				  <div class="page"><img src="images/coverpage.png" style="width:100%; height:100%; object-fit:cover;"></div>
-				  <div class="page"><img src="images/emptypage.PNG" style="width:100%; height:100%; object-fit:cover;"></div>
-				  <div class="page"><img src="images/endpage.png" style="width:100%; height:100%; object-fit:cover;"></div>
+			<div class="book">
+				<div class="page cover">
+				  <img src="coverpage.png" alt="封面">
 				</div>
+				<div class="page empty">
+				  <img src="emptypage.PNG" alt="空白页">
+				</div>
+				<div class="page end">
+				  <img src="endpage.png" alt="封底">
+				</div>
+			</div>
 				<br>
 				<button id="closeBook">关闭</button>
 			  </div>
