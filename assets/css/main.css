@@ -4791,38 +4791,26 @@ input, select, textarea {
 	}
 
 
-/* turn.js 用的书本容器样式 */
-.book {
-	width: 450px;
-	height: 600px;
-	margin: auto;
-	position: relative;
-	z-index: 10000;
-	touch-action: auto !important;
-  }
-  
-  /* 每一页容器（由 turn.js 识别） */
-  .book > div {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background: white;
-	pointer-events: auto; /* 确保页能接收事件 */
-	cursor: grab; /* 给用户一个提示 */
-  	user-select: none; /* 防止图片被选中 */
-  	touch-action: pan-y; /* 允许横向拖拽 */
-  }
-  
-  /* 每页图片样式 */
-  .book img {
-	width: 100%;
-	height: 100%;
-	display: block;
-	border-radius: 10px;
-  }
-
-  #bookModal {
-	z-index: 9999 !important;
-  }
-
-  
+	.book {
+		width: 450px;
+		height: 600px;
+		margin: auto;
+		position: relative;
+		z-index: 10000;
+	}
+	
+	.book > div {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		background: white;
+	}
+	
+	.book .double img {
+		width: 200%;     /* 两倍宽度，撑满左右 */
+		margin-left: -50%; /* 向左偏移一半，看起来居中 */
+	}
+	
+	#bookModal {
+		z-index: 9999 !important;
+	}
