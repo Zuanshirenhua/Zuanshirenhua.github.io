@@ -264,7 +264,7 @@ $(document).ready(function () {
 		$('#bookModal').fadeIn(() => {
 			if (!$('.book').data('done')) {
 				$('.book').turn({
-					width: 450,
+					width: 900,
 					height: 600,
 					autoCenter: true,
 					display: 'double',
