@@ -158,25 +158,32 @@
 	
 			<!-- 书本弹窗 -->
 			<div id="bookModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); z-index:999;">
+				<!-- 放在书本 modal 内，靠左右两侧对齐 -->
+				<button id="prevPage" class="fade-button" style="left: -60px; top: 50%; transform: translateY(-50%); position: absolute;">
+					<img src="images/leftarrow.png" style="width: 30px; height: auto;" />
+				</button>
+				
+				<button id="nextPage" class="fade-button" style="right: -60px; top: 50%; transform: translateY(-50%); position: absolute;">
+					<img src="images/rightarrow.png" style="width: 30px; height: auto;" />
+				</button>
+				
 				<div class="book">
-				<div><img src="images/coverpage.png" /></div>
-				<div><img src="images/emptypage.PNG" /></div>
-				<div><img src="images/endpage.png" /></div>
+					<div class="page cover"><img src="images/coverpage.png" /></div>
+					<div class="page double"><img src="images/emptypage.PNG" /></div>
+					<div class="page end"><img src="images/endpage.png" /></div>
 				</div>
-				<button id="closeBook">关闭</button>
-				<!-- <button onclick="$('.book').turn('next')">下一页</button> -->
-				<!-- <button onclick="$('.book').turn('previous')">上一页</button> -->
+				<button id="closeBook">关闭/Close</button>
 			</div>
 
 
 		<!-- Scripts -->
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
+			<script src="assets/js/turn.min.js"></script>
 			<script src="assets/js/main.js"></script>
 
 	</body>
