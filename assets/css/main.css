@@ -4794,7 +4794,7 @@ input, select, textarea {
 /* 翻页书本 */
 .book {
 	position: relative;
-	width: 1000px;
+	width: 400px;
 	height: 600px;
 	perspective: 2000px;
 	margin: auto;
