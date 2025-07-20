@@ -4793,8 +4793,8 @@ input, select, textarea {
 
 /* 翻页书本 */
 	#book {
-		width: 600px;
-		height: 400px;
+		width: 1000px;
+		height: 600px;
 	  }
 	  
 	#book .page {
