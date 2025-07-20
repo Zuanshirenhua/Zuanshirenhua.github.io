@@ -99,8 +99,8 @@ input, select, textarea {
 	}
 
 	body {
-		background: url("images/background.jpg") no-repeat center center fixed;
-		background-size: cover;
+		background: url("images/background.jpg") no-repeat center center fixed !important;
+		background-size: cover !important;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
