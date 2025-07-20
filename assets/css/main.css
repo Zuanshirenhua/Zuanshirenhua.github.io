@@ -4848,3 +4848,13 @@ input, select, textarea {
 		align-items: center;
 		justify-content: center;
 	  }
+
+	  @font-face {
+		font-family: 'QingNiaoHei';
+		src: url('QingNiaoHuaGuangJianMeiHei-2.ttf') format('truetype');
+		font-display: swap;
+	  }
+	  
+	  #typing-cn {
+		font-family: 'QingNiaoHei', serif;
+	  }
