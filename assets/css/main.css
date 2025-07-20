@@ -3249,7 +3249,7 @@ input, select, textarea {
 				rgba(0, 0, 0, 0.1),
 				rgba(0, 0, 0, 0.1)
 			),
-			url("images/background.jpg"); /* ✅ 确保路径正确 */
+			url("/images/background.jpg"); /* ✅ 确保路径正确 */
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
