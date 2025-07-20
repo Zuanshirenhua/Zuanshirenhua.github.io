@@ -4826,6 +4826,7 @@ input, select, textarea {
 		z-index: 9999 !important;
 		display: flex;           /* ✅ 加 flex 居中 .book */
 		justify-content: center;
+		position: relative;
 	  }
 
 	  .close-button {
@@ -4835,8 +4836,11 @@ input, select, textarea {
 		transform: translate(-50%, 20px);  /* 向下偏移 20px */
 		padding: 8px 16px;
 		font-size: 14px;
-		background-color: white;
-		border: 2px solid black;
+		background-color: green;
+		border: 2px solid goldenrod;
 		cursor: pointer;
 		z-index: 1002;
+		display: flex;              /* ✅ 水平+垂直居中 */
+		align-items: center;
+		justify-content: center;
 	  }
