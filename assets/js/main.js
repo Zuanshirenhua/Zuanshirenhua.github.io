@@ -259,24 +259,20 @@
 
 
 
-$(document).ready(function () {
-	// 初始化翻页书
-	$('#book').turn({
-	  width: 1000,
-	  height: 600,
-	  autoCenter: true,
-	  gradients: true,
-	  elevation: 50
-	});
-  
-	// 打开书本
-	$('#openBook').click(function (e) {
-	  e.preventDefault();
-	  $('#bookModal').fadeIn();
-	});
-  
-	// 关闭书本
-	$('#closeBook').click(function () {
-	  $('#bookModal').fadeOut();
-	});
+  // 点击“我的三分钟热度”打开书
+  document.getElementById('openBook').addEventListener('click', function(event) {
+    event.preventDefault(); // 阻止跳转锚点
+    document.getElementById('bookModal').style.display = 'block';
   });
+
+  // 关闭按钮
+  document.getElementById('closeBook').addEventListener('click', function() {
+    document.getElementById('bookModal').style.display = 'none';
+  });
+
+  // 翻页函数
+  function flipBook() {
+    document.getElementById('cover').style.transform = 'rotateY(-180deg)';
+    document.getElementById('empty').style.transform = 'rotateY(-180deg)';
+    document.getElementById('empty').style.transitionDelay = '0.3s';
+  }
