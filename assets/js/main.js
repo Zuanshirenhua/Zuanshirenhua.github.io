@@ -314,3 +314,22 @@ function endDrag(e) {
   document.removeEventListener("touchmove", onDrag);
   document.removeEventListener("touchend", endDrag);
 }
+
+
+$(document).ready(function () {
+	$('#openBook').on('click', function () {
+	  $('#bookModal').fadeIn();
+  
+	  // 初始化翻页书本
+	  $('.book').turn({
+		width: 800,
+		height: 500,
+		autoCenter: true,
+		display: 'single'
+	  });
+	});
+  
+	$('#closeBook').on('click', function () {
+	  $('#bookModal').fadeOut();
+	});
+  });
