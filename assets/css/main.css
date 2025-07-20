@@ -4847,3 +4847,9 @@ input, select, textarea {
 		align-items: center;
 		justify-content: center;
 	  }
+
+	  body, html {
+		background: url("images/background.jpg") no-repeat center center fixed !important;
+		background-size: cover !important;
+		background-color: transparent !important;
+	}
