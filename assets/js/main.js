@@ -258,13 +258,12 @@
 })(jQuery);
 
 
-
 $(document).ready(function () {
 	$('#openBook').on('click', function () {
 		$('#bookModal').fadeIn(() => {
 			if (!$('.book').data('done')) {
 
-					// 清空旧内容（防止多次打开重复）
+				// 清空旧内容（防止多次打开重复）
 				$('.book').empty();
 
 				// 添加封面
@@ -281,15 +280,39 @@ $(document).ready(function () {
 				// 添加固定的最后一页
 				$('.book').append('<div class="page end"><img src="images/endpage.png" /></div>');
 
-				// ✅ turn.js 初始化
+				// ✅ turn.js 初始化 + 添加翻页事件监听
 				$('.book').turn({
 					width: 900,
 					height: 600,
 					autoCenter: true,
 					display: 'double',
 					gradients: true,
-					acceleration: true
+					acceleration: true,
+					when: {
+						turned: function (event, page, view) {
+							const totalPages = $(this).turn('pages');
+
+							// 左箭头：第一页时隐藏
+							if (page === 1) {
+								$('#prevPage').hide();
+							} else {
+								$('#prevPage').show();
+							}
+
+							// 右箭头：最后一页时隐藏
+							if (page === totalPages) {
+								$('#nextPage').hide();
+							} else {
+								$('#nextPage').show();
+							}
+						}
+					}
 				});
+
+				// ✅ 初始页设为第一页 & 触发一次箭头状态刷新
+				$('.book').turn('page', 1);
+				$('#prevPage').hide(); // 因为第一页不显示左箭头
+				$('#nextPage').show();
 
 				$('.book').data('done', true);
 			}
