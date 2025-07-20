@@ -269,7 +269,9 @@ $(document).ready(function () {
 		  width: 450,
 		  height: 600,
 		  autoCenter: true,
-		  display: 'single'
+		  display: 'single',
+		  gradients: true,
+		  acceleration: true
 		});
 		$('.book').data('done', true); // ✅ 标记初始化完成
 	  }
