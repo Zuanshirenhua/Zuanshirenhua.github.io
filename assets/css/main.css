@@ -4796,6 +4796,9 @@ input, select, textarea {
 	width: 450px;
 	height: 600px;
 	margin: auto;
+	position: relative;
+	z-index: 10000;
+	touch-action: auto !important;
   }
   
   /* 每一页容器（由 turn.js 识别） */
@@ -4804,6 +4807,10 @@ input, select, textarea {
 	height: 100%;
 	overflow: hidden;
 	background: white;
+	pointer-events: auto; /* 确保页能接收事件 */
+	cursor: grab; /* 给用户一个提示 */
+  	user-select: none; /* 防止图片被选中 */
+  	touch-action: pan-y; /* 允许横向拖拽 */
   }
   
   /* 每页图片样式 */
@@ -4814,4 +4821,9 @@ input, select, textarea {
 	display: block;
 	border-radius: 10px;
   }
+
+  #bookModal {
+	z-index: 9999 !important;
+  }
+
   
