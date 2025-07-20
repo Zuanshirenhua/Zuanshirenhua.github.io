@@ -259,63 +259,6 @@
 
 
 
-let isDragging = false;
-let startX = 0;
-
-const cover = document.getElementById("cover");
-const empty = document.getElementById("empty");
-
-cover.addEventListener("mousedown", startDrag);
-cover.addEventListener("touchstart", startDrag);
-
-function startDrag(e) {
-  isDragging = true;
-  startX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
-
-  document.addEventListener("mousemove", onDrag);
-  document.addEventListener("mouseup", endDrag);
-
-  document.addEventListener("touchmove", onDrag);
-  document.addEventListener("touchend", endDrag);
-}
-
-function onDrag(e) {
-  if (!isDragging) return;
-
-  const currentX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
-  const deltaX = currentX - startX;
-  const rotation = Math.min(Math.max(deltaX / 5, 0), 180); // 限制 0 到 180 度
-
-  cover.style.transform = `rotateY(${-rotation}deg)`;
-}
-
-function endDrag(e) {
-  if (!isDragging) return;
-  isDragging = false;
-
-  const endX = e.type.includes("touch") ? e.changedTouches[0].clientX : e.clientX;
-  const totalDelta = endX - startX;
-
-  if (totalDelta < -100) {
-    // 翻页
-    cover.style.transform = 'rotateY(-180deg)';
-    empty.style.transform = 'rotateY(-180deg)';
-    empty.style.transitionDelay = '0.3s';
-  } else {
-    // 回到原位
-    cover.style.transform = 'rotateY(0deg)';
-    empty.style.transform = 'rotateY(0deg)';
-    empty.style.transitionDelay = '';
-  }
-
-  // 移除事件
-  document.removeEventListener("mousemove", onDrag);
-  document.removeEventListener("mouseup", endDrag);
-  document.removeEventListener("touchmove", onDrag);
-  document.removeEventListener("touchend", endDrag);
-}
-
-
 $(document).ready(function () {
 	$('#openBook').on('click', function () {
 	  $('#bookModal').fadeIn();
