@@ -4851,7 +4851,7 @@ input, select, textarea {
 
 	  @font-face {
 		font-family: 'QingNiaoHei';
-		src: url('QingNiaoHuaGuangJianMeiHei-2.ttf') format('truetype');
+		src: url('assets/fonts/QingNiaoHuaGuangJianMeiHei-2.ttf') format('truetype');
 		font-display: swap;
 	  }
 	  
@@ -4865,4 +4865,8 @@ input, select, textarea {
 
 	  #typing-sub {
 		font-family: 'QingNiaoHei', serif;
+	  }
+
+	  body {
+		font-family: 'QingNiaoHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 	  }
