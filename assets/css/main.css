@@ -4821,3 +4821,13 @@ input, select, textarea {
 		user-select: none;
 		pointer-events: none;
 	}
+
+	#bookModal {
+		position: fixed;
+		top: 10%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: auto; /* ✅ 允许内容自动撑宽 */
+		overflow: visible; /* ✅ 确保超出部分也能显示 */
+		z-index: 9999 !important;
+	}
