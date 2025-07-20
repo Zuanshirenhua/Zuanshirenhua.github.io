@@ -261,23 +261,23 @@
 
 $(document).ready(function () {
 	$('#openBook').on('click', function () {
-	  $('#bookModal').fadeIn();
-  
-	  // ✅ 避免重复初始化 turn.js
-	  if (!$('.book').data('done')) {
-		$('.book').turn({
-		  width: 450,
-		  height: 600,
-		  autoCenter: true,
-		  display: 'single',
-		  gradients: true,
-		  acceleration: true
+		$('#bookModal').fadeIn(() => {
+			// ✅ fadeIn 动画结束后才执行 turn.js 初始化
+			if (!$('.book').data('done')) {
+				$('.book').turn({
+					width: 450,
+					height: 600,
+					autoCenter: true,
+					display: 'single',
+					gradients: true,
+					acceleration: true
+				});
+				$('.book').data('done', true);
+			}
 		});
-		$('.book').data('done', true); // ✅ 标记初始化完成
-	  }
 	});
-  
+
 	$('#closeBook').on('click', function () {
-	  $('#bookModal').fadeOut();
+		$('#bookModal').fadeOut();
 	});
-  });
+});
