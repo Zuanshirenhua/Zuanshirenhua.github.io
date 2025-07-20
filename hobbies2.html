@@ -51,9 +51,9 @@
 									<p>人不应该是插在花瓶里供人观赏的静物，而是蔓延在草原上随风起舞的韵律。<br />
 									生命不是安排，而是追求，人生的意义也许永远没有答案，但也要尽情感受这种没有答案的人生。</p>
 								</header>
-								<a href="#" class="image main"><img src="images/hobbiehead.jpg" alt="" /></a>
+								<a href="#" class="image fit"><img src="images/hobbiehead.jpg" alt="" /></a>
 								<ul class="actions special">
-									<li><a href="#" class="button large">我的「三分钟热度」概览</a></li>
+									<li><a href="#bookModal" class="button large">我的「三分钟热度」概览</a></li>
 								</ul>
 							</article>
 
@@ -158,6 +158,25 @@
 
 			</div>
 
+			<!-- 书本弹窗 -->
+			<div id="bookModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); z-index:999;">
+				
+				<!-- 左右按钮用 img 实现（无边框） -->
+				<img id="prevPage" src="images/leftarrow.png" style="position:absolute; top:50%; left:-60px; transform:translateY(-50%); cursor:pointer; width:40px; height:auto; z-index:1001;">
+				<img id="nextPage" src="images/rightarrow.png" style="position:absolute; top:50%; right:-60px; transform:translateY(-50%); cursor:pointer; width:40px; height:auto; z-index:1001;">
+
+				<!-- 书本内容 -->
+				<div class="book">
+					<div class="page cover"><img src="images/coverpage.png" /></div>
+					<div class="page double"><img src="images/emptyleft.png" /></div>
+					<div class="page double"><img src="images/emptyright.png" /></div>
+					<div class="page end"><img src="images/endpage.png" /></div>
+				</div>
+
+				<button id="closeBook" class="close-button">关闭/CLOSE</button>
+			</div>
+
+
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
@@ -165,6 +184,7 @@
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
+			<script src="assets/js/turn.min.js"></script>
 			<script src="assets/js/main.js"></script>
 
 	</body>
