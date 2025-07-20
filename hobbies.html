@@ -178,13 +178,24 @@
 				  document.getElementById('openBook').addEventListener('click', function(event) {
 					event.preventDefault();
 					document.getElementById('bookModal').style.display = 'block';
+			  
+					// 初始化 turn.js（只执行一次）
+					if (!$('.book').data('done')) {
+					  $('.book').turn({
+						width: 800,
+						height: 500,
+						autoCenter: true,
+						display: 'single'
+					  });
+					  $('.book').data('done', true); // 标记已经初始化
+					}
 				  });
-				
+			  
 				  document.getElementById('closeBook').addEventListener('click', function() {
 					document.getElementById('bookModal').style.display = 'none';
 				  });
 				});
-			</script>
+			  </script>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
@@ -193,8 +204,8 @@
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
 			<script src="assets/js/turn.min.js"></script>
+			<script src="assets/js/main.js"></script>
 
 	</body>
 </html>
