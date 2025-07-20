@@ -4805,6 +4805,17 @@ input, select, textarea {
 		overflow: hidden;
 		background: white;
 	}
+
+	.book .cover img {
+		width: 100%;     
+		height: 100%;
+	}
+
+	.book .end img {
+		width: 100%;     
+		height: 100%;
+	}
+	
 	
 	.book .double img {
 		width: 200%;     /* 两倍宽度，撑满左右 */
