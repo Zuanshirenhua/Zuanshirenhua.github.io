@@ -303,42 +303,6 @@
             await Promise.all(loadPromises);
         }
 
-        function createCardBackTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 256;
-            canvas.height = 384;
-            const ctx = canvas.getContext('2d');
-            
-            // 创建渐变背景
-            const gradient = ctx.createLinearGradient(0, 0, 256, 384);
-            gradient.addColorStop(0, '#8b5cf6');
-            gradient.addColorStop(0.5, '#a855f7');
-            gradient.addColorStop(1, '#7c3aed');
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 256, 384);
-            
-            // 添加边框
-            ctx.strokeStyle = '#e0c3fc';
-            ctx.lineWidth = 8;
-            ctx.strokeRect(4, 4, 248, 376);
-            
-            // 添加中心图案
-            ctx.fillStyle = '#e0c3fc';
-            ctx.font = '60px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('✦', 128, 200);
-            
-            // 添加装饰图案
-            ctx.font = '20px Arial';
-            ctx.fillText('✦', 64, 100);
-            ctx.fillText('✦', 192, 100);
-            ctx.fillText('✦', 64, 300);
-            ctx.fillText('✦', 192, 300);
-            
-            return new THREE.CanvasTexture(canvas);
-        }
-
         function createCards() {
             const cardGeometry = new THREE.PlaneGeometry(2, 3);
             const totalCards = tarotCards.major.length;
@@ -356,15 +320,13 @@
                 const frontMesh = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
                 cardGroup.add(frontMesh);
                 
-                // 位置计算 - 扇形排列
-                const angle = (i / (totalCards - 1)) * Math.PI - Math.PI / 2;
-                const radius = 8;
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius * 0.5 - 3;
-                const y = -2;
-                
-                cardGroup.position.set(x, y, z);
-                cardGroup.rotation.z = angle * 0.3;
+
+                // 一字型横向排布逻辑
+                const spacing = 1.5; // 控制牌间距离
+                const startX = -((totalCards - 1) * spacing) / 2; // 使牌居中排布
+
+                cardGroup.position.set(startX + i * spacing, -2, 0);
+                cardGroup.rotation.set(0, 0, 0);
                 
                 // 存储卡牌数据
                 cardGroup.userData = {
