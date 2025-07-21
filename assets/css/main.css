@@ -4894,9 +4894,13 @@ input, select, textarea {
 	  }
 
 	  .small-header h1 {
-		font-size: 2rem;    /* 缩小标题字体 */
+		font-size: 1.5rem;    /* 缩小标题字体 */
 		line-height: 1.4;      /* 行距适中 */
 		margin-bottom: 1.5rem; /* 空间稍紧凑 */
+	  }
+
+	  .nowrap {
+		white-space: nowrap;
 	  }
 
 	  
