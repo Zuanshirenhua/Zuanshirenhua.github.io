@@ -163,7 +163,7 @@
                 { name: "皇后", meaning: "丰饶，母性，自然，创造力", image: "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg" },
                 { name: "皇帝", meaning: "权威，结构，领导力，稳定", image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg" },
                 { name: "教皇", meaning: "传统，精神指导，学习，道德", image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg" },
-                { name: "恋人", meaning: "爱情，选择，和谐，伙伴关系", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg" },
+                { name: "恋人", meaning: "爱情，选择，和谐，伙伴关系", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/The_Lovers.jpg" },
                 { name: "战车", meaning: "胜利，意志力，决心，自控", image: "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg" },
                 { name: "力量", meaning: "内在力量，勇气，耐心，同情", image: "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg" },
                 { name: "隐者", meaning: "内省，寻找答案，精神指引，孤独", image: "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg" },
@@ -306,32 +306,34 @@
         function createCards() {
             const cardGeometry = new THREE.PlaneGeometry(2, 3);
             const totalCards = tarotCards.major.length;
-            const spacing = 1.5;
-            const startX = -((totalCards - 1) * spacing) / 2;
-            const y = -2;
-            
+            const radius = 8;
+
             for (let i = 0; i < totalCards; i++) {
                 const cardGroup = new THREE.Group();
 
-                // 正面 + 背面
+                // 背面
                 const backMesh = new THREE.Mesh(cardGeometry, cardBackMaterial);
                 backMesh.rotation.y = Math.PI;
-                const frontMesh = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
-
                 cardGroup.add(backMesh);
+
+                // 正面
+                const frontMesh = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
                 cardGroup.add(frontMesh);
 
-                const x = startX + i * spacing;
-                const z = 0;
+                // 圆弧排布（计算位置）
+                const angle = (i / (totalCards - 1)) * Math.PI - Math.PI / 2;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius * 0.5 - 3;
+                const y = -2;
 
                 cardGroup.position.set(x, y, z);
-                cardGroup.rotation.set(0, 0, 0);
+                cardGroup.rotation.z = angle * 0.3;
 
                 cardGroup.userData = {
                     card: tarotCards.major[i],
                     index: i,
                     originalPosition: new THREE.Vector3(x, y, z),
-                    originalRotation: new THREE.Vector3(0, 0, 0),
+                    originalRotation: new THREE.Vector3(0, 0, angle * 0.3),
                     isFlipped: false,
                     isSelected: false
                 };
