@@ -306,7 +306,7 @@
         function createCards() {
             const cardGeometry = new THREE.PlaneGeometry(2, 3);
             const totalCards = tarotCards.major.length;
-            const radius = 8;
+            const spacing = 2.5; // ✅ 这一行是关键！
 
             for (let i = 0; i < totalCards; i++) {
                 const cardGroup = new THREE.Group();
