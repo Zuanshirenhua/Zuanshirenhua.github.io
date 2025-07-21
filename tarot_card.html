@@ -311,15 +311,15 @@
             for (let i = 0; i < totalCards; i++) {
                 const cardGroup = new THREE.Group();
 
-                // ✅ 正确的卡背（默认展示）
-                const back = new THREE.Mesh(cardGeometry, cardBackMaterial);
-                back.rotation.y = 0; // 背面朝外
+                // ✅ 卡背朝外，初始显示
+                const back = new THREE.Mesh(geometry, backMaterial);
+                back.rotation.y = 0;
                 cardGroup.add(back);
 
-                // ✅ 正确的卡面（默认朝内）
-                const front = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
-                front.rotation.y = Math.PI; // 正面朝里
-                front.position.z = 0.01; // 防止 Z-fighting
+                // ✅ 卡面朝内，翻转后才能看到
+                const front = new THREE.Mesh(geometry, frontMaterial);
+                front.rotation.y = Math.PI;
+                front.position.z = 0.01;  // 避免 Z-fighting
                 cardGroup.add(front);
 
                 // 圆弧排布（计算位置）
