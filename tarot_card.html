@@ -318,25 +318,25 @@
 
                 // 正面
                 const frontMesh = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
+                frontMesh.position.z = 0.01; // 避免正反冲突
                 cardGroup.add(frontMesh);
 
                 // 圆弧排布（计算位置）
-                const angle = (i / (totalCards - 1)) * Math.PI - Math.PI / 2;
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius * 0.5 - 3;
+                const x = (i - (totalCards - 1) / 2) * spacing;
                 const y = -2;
-
+                const z = 0;
                 cardGroup.position.set(x, y, z);
-                cardGroup.rotation.z = angle * 0.3;
-
+                cardGroup.rotation.set(0, 0, 0);
+                
                 cardGroup.userData = {
                     card: tarotCards.major[i],
                     index: i,
                     originalPosition: new THREE.Vector3(x, y, z),
-                    originalRotation: new THREE.Vector3(0, 0, angle * 0.3),
+                    originalRotation: new THREE.Vector3(0, 0, 0),
                     isFlipped: false,
                     isSelected: false
                 };
+
 
                 cards.push(cardGroup);
                 scene.add(cardGroup);
