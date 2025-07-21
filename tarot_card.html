@@ -313,12 +313,12 @@
                 const cardGroup = new THREE.Group();
 
                 // ✅ 卡背朝外，初始显示
-                const back = new THREE.Mesh(geometry, backMaterial);
+                const back = new THREE.Mesh(geometry, cardBackMaterial);
                 back.rotation.y = 0;
                 cardGroup.add(back);
 
                 // ✅ 卡面朝内，翻转后才能看到
-                const front = new THREE.Mesh(geometry, frontMaterial);
+                const front = new THREE.Mesh(geometry, cardFrontMaterials);
                 front.rotation.y = Math.PI;
                 front.position.z = 0.01;  // 避免 Z-fighting
                 cardGroup.add(front);
