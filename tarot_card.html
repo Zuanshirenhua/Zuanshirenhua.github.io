@@ -306,45 +306,36 @@
         function createCards() {
             const cardGeometry = new THREE.PlaneGeometry(2, 3);
             const totalCards = tarotCards.major.length;
+            const spacing = 1.5;
+            const startX = -((totalCards - 1) * spacing) / 2;
+            const y = -2;
             
             for (let i = 0; i < totalCards; i++) {
-                // 创建卡牌组（正面和背面）
                 const cardGroup = new THREE.Group();
-                
-                // 背面
+
+                // 正面 + 背面
                 const backMesh = new THREE.Mesh(cardGeometry, cardBackMaterial);
                 backMesh.rotation.y = Math.PI;
-                cardGroup.add(backMesh);
-                
-                // 正面
                 const frontMesh = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
+
+                cardGroup.add(backMesh);
                 cardGroup.add(frontMesh);
-                
-
-                // 一字型横向排布逻辑
-                const spacing = 1.5;
-                const startX = -((totalCards - 1) * spacing) / 2;
-                const y = -2;
-
-                for (let i = 0; i < totalCards; i++) {
-                const cardGroup = new THREE.Group();
 
                 const x = startX + i * spacing;
                 const z = 0;
+
                 cardGroup.position.set(x, y, z);
-                cardGroup.rotation.set(0, 0, 0); // 不旋转
-                }
-                
-                // 存储卡牌数据
+                cardGroup.rotation.set(0, 0, 0);
+
                 cardGroup.userData = {
                     card: tarotCards.major[i],
                     index: i,
                     originalPosition: new THREE.Vector3(x, y, z),
-                    originalRotation: new THREE.Vector3(0, 0, angle * 0.3),
+                    originalRotation: new THREE.Vector3(0, 0, 0),
                     isFlipped: false,
                     isSelected: false
                 };
-                
+
                 cards.push(cardGroup);
                 scene.add(cardGroup);
             }
