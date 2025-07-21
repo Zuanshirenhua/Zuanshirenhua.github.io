@@ -4786,19 +4786,19 @@ input, select, textarea {
 	  
 	  /* 分类颜色自定义 */
 	  .tag-project {
-		background-color: #4a90e2; /* 蓝色 */
+		background-color: #638889; /* 蓝色 */
 	  }
 	  
 	  .tag-intern {
-		background-color: #27ae60; /* 绿色 */
+		background-color: #708160; /* 绿色 */
 	  }
 	  
 	  .tag-volunteer {
-		background-color: #e67e22; /* 橙色 */
+		background-color: #DD7631; /* 橙色 */
 	  }
 	  
 	  .tag-extracurricular {
-		background-color: #9b59b6; /* 紫色 */
+		background-color: #5F0F40; /* 紫色 */
 	  }
 
 /* intro 不要斜体 */
@@ -4879,6 +4879,24 @@ input, select, textarea {
 		display: block;
 		margin: 1rem auto; /* 居中显示 */
 		border-radius: 8px; /* 可选：圆角 */
+	  }
+
+	  .custom-image-wrapper {
+		max-width: 90%;       /* 比正文略窄 */
+		margin: 2rem auto;    /* 上下留白，居中 */
+		text-align: center;
+	  }
+	  
+	  .custom-image-wrapper img {
+		width: 100%;          /* 让图片最大宽度填满容器 */
+		height: auto;         /* 保持宽高比 */
+		border-radius: 10px;  /* 可选：让边角柔和一点 */
+	  }
+
+	  .small-header h1 {
+		font-size: 2.25rem;    /* 缩小标题字体 */
+		line-height: 1.4;      /* 行距适中 */
+		margin-bottom: 1.5rem; /* 空间稍紧凑 */
 	  }
 
 	  
