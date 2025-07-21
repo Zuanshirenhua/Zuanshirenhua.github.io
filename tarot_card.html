@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 塔罗牌占卜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a0b2e 50%, #16213e 100%);
+            overflow: hidden;
+            color: #f0f0f0;
+            cursor: default;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .title {
+            text-align: center;
+            color: #e0c3fc;
+            font-size: 2.5rem;
+            margin: 20px 0;
+            text-shadow: 2px 2px 8px rgba(224, 195, 252, 0.5);
+        }
+
+        .control-panel {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .shuffle-btn {
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .shuffle-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+        }
+
+        .shuffle-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .interpretation {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 500px;
+            padding: 25px;
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 15px;
+            border: 1px solid rgba(224, 195, 252, 0.3);
+            text-align: center;
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .interpretation.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .interpretation h3 {
+            color: #e0c3fc;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .interpretation p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .card-type {
+            font-size: 0.9rem;
+            color: #c4b5fd;
+            margin-bottom: 8px;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #e0c3fc;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .instructions {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #c4b5fd;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="ui-overlay">
+            <h1 class="title">✦ 3D 塔罗牌占卜 ✦</h1>
+            <div class="control-panel">
+                <button class="shuffle-btn" id="shuffleBtn">洗牌</button>
+            </div>
+            <div class="instructions">
+                将鼠标移动到卡牌上查看效果，点击翻牌
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">正在加载塔罗牌...</div>
+        
+        <div class="interpretation" id="interpretation">
+            <!-- 解释将在这里显示 -->
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // 塔罗牌数据（包含图片URL）
+        const tarotCards = {
+            major: [
+                { name: "愚者", meaning: "新的开始，冒险精神，天真无邪，无限可能", image: "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg" },
+                { name: "魔术师", meaning: "意志力，创造力，技能，资源丰富", image: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg" },
+                { name: "女祭司", meaning: "直觉，神秘，内在智慧，潜意识", image: "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg" },
+                { name: "皇后", meaning: "丰饶，母性，自然，创造力", image: "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg" },
+                { name: "皇帝", meaning: "权威，结构，领导力，稳定", image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg" },
+                { name: "教皇", meaning: "传统，精神指导，学习，道德", image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg" },
+                { name: "恋人", meaning: "爱情，选择，和谐，伙伴关系", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg" },
+                { name: "战车", meaning: "胜利，意志力，决心，自控", image: "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg" },
+                { name: "力量", meaning: "内在力量，勇气，耐心，同情", image: "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg" },
+                { name: "隐者", meaning: "内省，寻找答案，精神指引，孤独", image: "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg" },
+                { name: "命运之轮", meaning: "变化，命运，机遇，循环", image: "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg" },
+                { name: "正义", meaning: "公正，真相，法律，因果报应", image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg" },
+                { name: "倒吊人", meaning: "牺牲，等待，新视角，释放", image: "https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg" },
+                { name: "死神", meaning: "结束，转变，重生，释放过去", image: "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg" },
+                { name: "节制", meaning: "平衡，耐心，调和，适度", image: "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg" },
+                { name: "恶魔", meaning: "束缚，诱惑，物质主义，依赖", image: "https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg" },
+                { name: "塔", meaning: "突然变化，启示，毁灭，解放", image: "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg" },
+                { name: "星星", meaning: "希望，灵感，治愈，精神指引", image: "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg" },
+                { name: "月亮", meaning: "幻象，恐惧，潜意识，欺骗", image: "https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg" },
+                { name: "太阳", meaning: "快乐，成功，活力，启蒙", image: "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg" },
+                { name: "审判", meaning: "重生，内在召唤，宽恕，救赎", image: "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg" },
+                { name: "世界", meaning: "完成，成就，整合，旅程结束", image: "https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg" }
+            ]
+        };
+
+        // Three.js 场景设置
+        let scene, camera, renderer, raycaster, mouse;
+        let cards = [];
+        let hoveredCard = null;
+        let selectedCard = null;
+        let isShuffling = false;
+
+        // 材质和纹理
+        let cardBackTexture, cardFrontTextures = [];
+        let cardBackMaterial, cardFrontMaterials = [];
+
+        init();
+
+        function init() {
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a1a);
+
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 15);
+
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // 射线投射器和鼠标
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // 添加光照
+            setupLighting();
+
+            // 加载纹理和创建卡牌
+            loadTextures().then(() => {
+                createCards();
+                document.getElementById('loading').style.display = 'none';
+                animate();
+            });
+
+            // 事件监听
+            setupEventListeners();
+        }
+
+        function setupLighting() {
+            // 环境光
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+
+            // 主光源
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(-1, 1, 1);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            scene.add(directionalLight);
+
+            // 补光
+            const fillLight = new THREE.DirectionalLight(0x8b5cf6, 0.3);
+            fillLight.position.set(1, -1, -1);
+            scene.add(fillLight);
+        }
+
+        async function loadTextures() {
+            const textureLoader = new THREE.TextureLoader();
+            
+            // 创建卡牌背面纹理（程序生成）
+            const backImageUrl = 'images/tarotcover.jpg'; // 例如：'images/tarot-back.jpg'
+            cardBackTexture = await new Promise((resolve, reject) => {
+                textureLoader.load(backImageUrl, resolve, undefined, reject);
+            });
+            cardBackMaterial = new THREE.MeshLambertMaterial({ 
+                map: cardBackTexture,
+                side: THREE.DoubleSide 
+            });
+
+            // 加载卡牌正面纹理
+            const loadPromises = tarotCards.major.map(async (card, index) => {
+                try {
+                    const texture = await new Promise((resolve, reject) => {
+                        textureLoader.load(
+                            card.image,
+                            resolve,
+                            undefined,
+                            reject
+                        );
+                    });
+                    texture.flipY = false;
+                    cardFrontTextures[index] = texture;
+                    cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
+                        map: texture,
+                        side: THREE.DoubleSide 
+                    });
+                } catch (error) {
+                    // 如果加载失败，创建一个纯色材质作为备用
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 256;
+                    canvas.height = 384;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#f4e4b8';
+                    ctx.fillRect(0, 0, 256, 384);
+                    ctx.fillStyle = '#8b5cf6';
+                    ctx.font = '20px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(card.name, 128, 192);
+                    
+                    const texture = new THREE.CanvasTexture(canvas);
+                    cardFrontTextures[index] = texture;
+                    cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
+                        map: texture,
+                        side: THREE.DoubleSide 
+                    });
+                }
+            });
+
+            await Promise.all(loadPromises);
+        }
+
+        function createCardBackTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 384;
+            const ctx = canvas.getContext('2d');
+            
+            // 创建渐变背景
+            const gradient = ctx.createLinearGradient(0, 0, 256, 384);
+            gradient.addColorStop(0, '#8b5cf6');
+            gradient.addColorStop(0.5, '#a855f7');
+            gradient.addColorStop(1, '#7c3aed');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 256, 384);
+            
+            // 添加边框
+            ctx.strokeStyle = '#e0c3fc';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(4, 4, 248, 376);
+            
+            // 添加中心图案
+            ctx.fillStyle = '#e0c3fc';
+            ctx.font = '60px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('✦', 128, 200);
+            
+            // 添加装饰图案
+            ctx.font = '20px Arial';
+            ctx.fillText('✦', 64, 100);
+            ctx.fillText('✦', 192, 100);
+            ctx.fillText('✦', 64, 300);
+            ctx.fillText('✦', 192, 300);
+            
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createCards() {
+            const cardGeometry = new THREE.PlaneGeometry(2, 3);
+            const totalCards = tarotCards.major.length;
+            
+            for (let i = 0; i < totalCards; i++) {
+                // 创建卡牌组（正面和背面）
+                const cardGroup = new THREE.Group();
+                
+                // 背面
+                const backMesh = new THREE.Mesh(cardGeometry, cardBackMaterial);
+                backMesh.rotation.y = Math.PI;
+                cardGroup.add(backMesh);
+                
+                // 正面
+                const frontMesh = new THREE.Mesh(cardGeometry, cardFrontMaterials[i]);
+                cardGroup.add(frontMesh);
+                
+                // 位置计算 - 扇形排列
+                const angle = (i / (totalCards - 1)) * Math.PI - Math.PI / 2;
+                const radius = 8;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius * 0.5 - 3;
+                const y = -2;
+                
+                cardGroup.position.set(x, y, z);
+                cardGroup.rotation.z = angle * 0.3;
+                
+                // 存储卡牌数据
+                cardGroup.userData = {
+                    card: tarotCards.major[i],
+                    index: i,
+                    originalPosition: new THREE.Vector3(x, y, z),
+                    originalRotation: new THREE.Vector3(0, 0, angle * 0.3),
+                    isFlipped: false,
+                    isSelected: false
+                };
+                
+                cards.push(cardGroup);
+                scene.add(cardGroup);
+            }
+        }
+
+        function setupEventListeners() {
+            // 鼠标移动
+            window.addEventListener('mousemove', onMouseMove, false);
+            
+            // 鼠标点击
+            window.addEventListener('click', onMouseClick, false);
+            
+            // 洗牌按钮
+            document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
+            
+            // 窗口大小调整
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            checkHover();
+        }
+
+        function onMouseClick(event) {
+            if (isShuffling) return;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(cards, true);
+            
+            if (intersects.length > 0) {
+                const clickedCard = intersects[0].object.parent;
+                if (!clickedCard.userData.isSelected) {
+                    selectCard(clickedCard);
+                }
+            }
+        }
+
+        function checkHover() {
+            if (isShuffling || selectedCard) return;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(cards, true);
+            
+            // 重置之前悬停的卡牌
+            if (hoveredCard && hoveredCard !== selectedCard) {
+                animateCardToPosition(hoveredCard, 
+                    hoveredCard.userData.originalPosition, 
+                    hoveredCard.userData.originalRotation, 300);
+            }
+            
+            hoveredCard = null;
+            
+            if (intersects.length > 0) {
+                const card = intersects[0].object.parent;
+                if (!card.userData.isSelected) {
+                    hoveredCard = card;
+                    // 向上移动卡牌
+                    const hoverPosition = card.userData.originalPosition.clone();
+                    hoverPosition.y += 1.5; // 明显的向上移动
+                    animateCardToPosition(card, hoverPosition, card.userData.originalRotation, 200);
+                }
+            }
+        }
+
+        function selectCard(card) {
+            if (selectedCard) return;
+            
+            selectedCard = card;
+            card.userData.isSelected = true;
+            
+            // 翻牌动画
+            flipCard(card).then(() => {
+                // 移动到底部中央
+                const selectedPosition = new THREE.Vector3(0, -6, 2);
+                const selectedRotation = new THREE.Vector3(0, 0, 0);
+                animateCardToPosition(card, selectedPosition, selectedRotation, 800);
+                
+                // 显示解释
+                showInterpretation(card.userData.card);
+            });
+        }
+
+        function flipCard(card) {
+            return new Promise((resolve) => {
+                const startRotation = card.rotation.y;
+                const endRotation = startRotation + Math.PI;
+                const duration = 600;
+                const startTime = Date.now();
+                
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // 使用缓动函数
+                    const easedProgress = 1 - Math.pow(1 - progress, 3);
+                    card.rotation.y = startRotation + (endRotation - startRotation) * easedProgress;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        card.userData.isFlipped = true;
+                        resolve();
+                    }
+                }
+                
+                animate();
+            });
+        }
+
+        function animateCardToPosition(card, targetPosition, targetRotation, duration) {
+            const startPosition = card.position.clone();
+            const startRotation = new THREE.Vector3(card.rotation.x, card.rotation.y, card.rotation.z);
+            const startTime = Date.now();
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // 使用缓动函数
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                
+                card.position.lerpVectors(startPosition, targetPosition, easedProgress);
+                card.rotation.x = startRotation.x + (targetRotation.x - startRotation.x) * easedProgress;
+                card.rotation.z = startRotation.z + (targetRotation.z - startRotation.z) * easedProgress;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            animate();
+        }
+
+        function shuffleCards() {
+            if (isShuffling) return;
+            
+            isShuffling = true;
+            const shuffleBtn = document.getElementById('shuffleBtn');
+            shuffleBtn.disabled = true;
+            shuffleBtn.textContent = '洗牌中...';
+            
+            // 隐藏解释
+            document.getElementById('interpretation').classList.remove('show');
+            
+            // 重置选中的卡牌
+            if (selectedCard) {
+                selectedCard.userData.isSelected = false;
+                selectedCard.userData.isFlipped = false;
+                selectedCard.rotation.y = Math.PI;
+                selectedCard = null;
+            }
+            
+            // 洗牌动画
+            const shufflePromises = cards.map((card, index) => {
+                return new Promise((resolve) => {
+                    const randomX = (Math.random() - 0.5) * 20;
+                    const randomY = (Math.random() - 0.5) * 10;
+                    const randomZ = (Math.random() - 0.5) * 10;
+                    const randomRotation = new THREE.Vector3(
+                        (Math.random() - 0.5) * Math.PI,
+                        Math.PI + (Math.random() - 0.5) * 0.5,
+                        (Math.random() - 0.5) * Math.PI
+                    );
+                    
+                    setTimeout(() => {
+                        animateCardToPosition(
+                            card,
+                            new THREE.Vector3(randomX, randomY, randomZ),
+                            randomRotation,
+                            1000
+                        );
+                        setTimeout(resolve, 1000);
+                    }, index * 50);
+                });
+            });
+            
+            // 洗牌完成后重新排列
+            Promise.all(shufflePromises).then(() => {
+                setTimeout(() => {
+                    repositionCards();
+                    setTimeout(() => {
+                        isShuffling = false;
+                        shuffleBtn.disabled = false;
+                        shuffleBtn.textContent = '洗牌';
+                    }, 1500);
+                }, 500);
+            });
+        }
+
+        function repositionCards() {
+            // 重新随机排序
+            const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
+            
+            shuffledCards.forEach((card, i) => {
+                const totalCards = shuffledCards.length;
+                const angle = (i / (totalCards - 1)) * Math.PI - Math.PI / 2;
+                const radius = 8;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius * 0.5 - 3;
+                const y = -2;
+                
+                const newPosition = new THREE.Vector3(x, y, z);
+                const newRotation = new THREE.Vector3(0, Math.PI, angle * 0.3);
+                
+                card.userData.originalPosition = newPosition;
+                card.userData.originalRotation = newRotation;
+                card.userData.isFlipped = false;
+                
+                animateCardToPosition(card, newPosition, newRotation, 1000);
+            });
+        }
+
+        function showInterpretation(card) {
+            const interpretation = document.getElementById('interpretation');
+            interpretation.innerHTML = `
+                <div class="card-type">大阿尔卡纳</div>
+                <h3>${card.name}</h3>
+                <p>${card.meaning}</p>
+                <p style="font-style: italic; color: #c4b5fd; margin-top: 15px;">
+                    这张牌代表着当前情况的重要信息，请结合自己的实际情况进行思考。
+                </p>
+            `;
+            
+            setTimeout(() => {
+                interpretation.classList.add('show');
+            }, 100);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 轻微的相机摇摆效果
+            if (!isShuffling) {
+                camera.position.x = Math.sin(Date.now() * 0.001) * 0.5;
+                camera.position.y = Math.cos(Date.now() * 0.0008) * 0.3;
+                camera.lookAt(0, -2, 0);
+            }
+            
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
