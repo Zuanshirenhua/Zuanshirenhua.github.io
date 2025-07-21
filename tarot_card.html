@@ -318,7 +318,7 @@
                 cardGroup.add(back);
 
                 // ✅ 卡面朝内，翻转后才能看到
-                const front = new THREE.Mesh(geometry, cardFrontMaterials);
+                const front = new THREE.Mesh(geometry, cardFrontMaterials[i]);
                 front.rotation.y = Math.PI;
                 front.position.z = 0.01;  // 避免 Z-fighting
                 cardGroup.add(front);
