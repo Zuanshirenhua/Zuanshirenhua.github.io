@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式3D大脑模型</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 350px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        #info-panel h2 {
+            color: #4fc3f7;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        #info-panel p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        #info-panel .functions {
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        #info-panel .functions h3 {
+            color: #81c784;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        #info-panel .functions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #info-panel .functions li {
+            color: #c8e6c9;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        #info-panel .functions li:before {
+            content: "●";
+            color: #4fc3f7;
+            position: absolute;
+            left: 0;
+        }
+
+        #info-panel .medical-info {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            padding: 8px 12px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        #info-panel .medical-info h4 {
+            color: #ffc107;
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        #info-panel .medical-info p {
+            color: #fff3cd;
+            font-size: 0.9em;
+        }
+
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+            z-index: 100;
+        }
+
+        #instructions h3 {
+            color: #4fc3f7;
+            margin-bottom: 8px;
+        }
+
+        #instructions p {
+            color: #b0b0b0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #4fc3f7;
+            font-size: 1.2em;
+            z-index: 200;
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(79, 195, 247, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            z-index: 100;
+        }
+
+        #title h1 {
+            color: #4fc3f7;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        #title p {
+            color: #b0b0b0;
+            font-size: 0.9em;
+        }
+
+        .file-upload {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            background: rgba(129, 199, 132, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(129, 199, 132, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            z-index: 100;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload label {
+            background: rgba(129, 199, 132, 0.3);
+            color: #81c784;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload label:hover {
+            background: rgba(129, 199, 132, 0.5);
+        }
+
+        .file-upload p {
+            color: #b0b0b0;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div class="loading" id="loading">加载3D大脑模型中...</div>
+        
+        <div id="title">
+            <h1>人脑结构探索</h1>
+            <p>高精度3D解剖模型</p>
+        </div>
+
+        <div class="file-upload">
+            <label for="model-upload">加载3D模型</label>
+            <input type="file" id="model-upload" accept=".glb,.gltf">
+            <p>支持GLB/GLTF格式</p>
+        </div>
+
+        <div id="info-panel">
+            <h2>欢迎探索大脑</h2>
+            <p>点击大脑的不同区域来了解各部分的功能和作用。每个区域都负责不同的认知和生理功能。</p>
+            <div class="functions">
+                <h3>开始探索</h3>
+                <ul>
+                    <li>拖拽鼠标旋转大脑</li>
+                    <li>滚轮缩放视图</li>
+                    <li>点击区域查看详情</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="instructions">
+            <h3>操作指南</h3>
+            <p>• 左键拖拽：旋转模型<br>
+               • 滚轮：缩放视图<br>
+               • 点击：查看区域信息<br>
+               • 上传：加载真实3D模型</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        // 大脑区域数据（更详细的医学描述）
+        const brainRegions = {
+            frontal_cortex: {
+                name: "额叶皮质",
+                description: "额叶皮质是大脑最前部的区域，负责高级认知功能，是人类智力和个性的核心。包含前额叶皮质、运动皮质和前运动皮质。",
+                functions: [
+                    "执行功能：计划、决策、问题解决",
+                    "工作记忆和注意力控制",
+                    "语言表达（布洛卡区，通常在左侧）",
+                    "情绪调节和冲动控制",
+                    "运动规划和执行",
+                    "抽象思维和推理能力"
+                ],
+                color: 0xff6b6b,
+                medicalInfo: "前额叶损伤可能导致执行功能障碍、人格改变和判断力下降"
+            },
+            parietal_cortex: {
+                name: "顶叶皮质",
+                description: "顶叶皮质位于大脑顶部，是感觉信息整合和空间处理的中心，包含初级躯体感觉皮质和后顶叶联合区。",
+                functions: [
+                    "触觉、温度、痛觉和本体感觉处理",
+                    "空间方向感和导航能力",
+                    "视觉-空间信息整合",
+                    "身体图式和自我意识",
+                    "注意力分配和意识",
+                    "数学计算和读写能力辅助"
+                ],
+                color: 0x4ecdc4,
+                medicalInfo: "顶叶损伤可能导致失用症、失认症和空间定向障碍"
+            },
+            temporal_cortex: {
+                name: "颞叶皮质",
+                description: "颞叶位于大脑两侧，是听觉处理、语言理解和记忆形成的关键区域，包含海马体、杏仁核等重要结构。",
+                functions: [
+                    "听觉信息处理和音乐感知",
+                    "语言理解（韦尼克区，通常在左侧）",
+                    "长期记忆的形成和检索",
+                    "情绪处理和恐惧反应（杏仁核）",
+                    "面部识别和社交认知",
+                    "时间感知和序列记忆"
+                ],
+                color: 0x45b7d1,
+                medicalInfo: "颞叶损伤可能导致记忆缺失、语言理解困难和癫痫"
+            },
+            occipital_cortex: {
+                name: "枕叶皮质",
+                description: "枕叶位于大脑后部，是视觉系统的核心，包含初级视觉皮质（V1）和多个视觉联合区域。",
+                functions: [
+                    "初级视觉信息处理",
+                    "形状、颜色和纹理识别",
+                    "运动检测和追踪",
+                    "深度知觉和立体视觉",
+                    "视觉记忆和图像识别",
+                    "空间视觉分析"
+                ],
+                color: 0xf7b731,
+                medicalInfo: "枕叶损伤可能导致皮质性失明、视野缺损和视觉失认"
+            },
+            cerebellum: {
+                name: "小脑",
+                description: "小脑虽然只占大脑体积的10%，但包含了大脑一半以上的神经元，是运动协调和学习的关键结构。",
+                functions: [
+                    "精细运动控制和协调",
+                    "平衡维持和姿势调节",
+                    "运动学习和适应性调节",
+                    "认知功能的辅助和优化",
+                    "语言流畅性和节律处理",
+                    "预测性运动控制"
+                ],
+                color: 0xa55eea,
+                medicalInfo: "小脑损伤可能导致运动失调、平衡障碍和构音困难"
+            },
+            brainstem: {
+                name: "脑干",
+                description: "脑干包括延髓、脑桥和中脑，是维持生命的控制中心，连接大脑和脊髓。",
+                functions: [
+                    "呼吸、心率和血压调节",
+                    "睡眠-觉醒周期控制",
+                    "吞咽、咳嗽等保护性反射",
+                    "眼球运动和瞳孔反射",
+                    "面部感觉和表情肌控制",
+                    "意识水平维持"
+                ],
+                color: 0x26de81,
+                medicalInfo: "脑干损伤可能危及生命，导致昏迷、呼吸困难等严重症状"
+            },
+            limbic_system: {
+                name: "边缘系统",
+                description: "边缘系统是大脑的情绪和记忆中心，包括海马体、杏仁核、扣带回等结构。",
+                functions: [
+                    "情绪产生和调节",
+                    "记忆形成和巩固",
+                    "动机和奖赏机制",
+                    "社交行为和依恋",
+                    "恐惧和应激反应",
+                    "本能行为控制"
+                ],
+                color: 0xff9ff3,
+                medicalInfo: "边缘系统功能异常与抑郁症、焦虑症、PTSD等疾病相关"
+            }
+        };
+
+        // Three.js 场景设置
+        let scene, camera, renderer;
+        let brainModel, regionMeshes = [];
+        let raycaster, mouse;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let isModelLoaded = false;
+
+        function init() {
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0a);
+
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // 创建射线投射器和鼠标向量
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // 创建灯光
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            const pointLight = new THREE.PointLight(0x4fc3f7, 0.5);
+            pointLight.position.set(-10, 5, 5);
+            scene.add(pointLight);
+
+            // 创建更真实的大脑模型
+            createRealisticBrainModel();
+
+            // 添加事件监听器
+            addEventListeners();
+
+            // 隐藏加载提示
+            document.getElementById('loading').style.display = 'none';
+
+            // 开始渲染循环
+            animate();
+        }
+
+        function createRealisticBrainModel() {
+            const loader = new THREE.GLTFLoader();
+            loader.load('images/3Dbrain.glb', function (gltf) {
+                brainModel = gltf.scene;
+                brainModel.scale.set(1.5, 1.5, 1.5);  // 可以根据需要调整缩放
+                scene.add(brainModel);
+                isModelLoaded = true;
+
+                // 可选：设置每个子部件的 userData.region 标记以支持点击高亮
+                brainModel.traverse((child) => {
+                    if (child.isMesh) {
+                        regionMeshes.push(child);
+                        child.material.transparent = true;
+                        child.material.opacity = 0.85;
+                        child.userData.region = 'custom';  // 可自定义识别逻辑
+                    }
+                });
+
+                document.getElementById('loading').style.display = 'none';
+            }, undefined, function (error) {
+                console.error('GLB加载失败:', error);
+                alert('加载模型失败，请检查文件路径和格式。');
+            });
+        }
+            
+
+        function addBrainSurfaceDetails() {
+            // 为大脑表面添加更多细节
+            regionMeshes.forEach((mesh, index) => {
+                // 添加边缘光效果
+                const glowGeometry = mesh.geometry.clone();
+                const glowMaterial = new THREE.MeshBasicMaterial({
+                    color: mesh.material.color,
+                    transparent: true,
+                    opacity: 0.15,
+                    side: THREE.BackSide
+                });
+                const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+                glowMesh.scale.setScalar(1.05);
+                glowMesh.position.copy(mesh.position);
+                glowMesh.rotation.copy(mesh.rotation);
+                brainModel.add(glowMesh);
+
+                // 添加脉冲动画
+                const originalScale = mesh.scale.clone();
+                mesh.userData.originalScale = originalScale;
+                mesh.userData.pulsePhase = Math.random() * Math.PI * 2;
+            });
+        }
+
+        function addEventListeners() {
+            renderer.domElement.addEventListener('mousedown', onMouseDown);
+            renderer.domElement.addEventListener('mousemove', onMouseMove);
+            renderer.domElement.addEventListener('mouseup', onMouseUp);
+            renderer.domElement.addEventListener('click', onMouseClick);
+            renderer.domElement.addEventListener('wheel', onWheel);
+            window.addEventListener('resize', onWindowResize);
+
+            // 文件上传监听器
+            document.getElementById('model-upload').addEventListener('change', handleFileUpload);
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                loadExternalModel(arrayBuffer);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function loadExternalModel(arrayBuffer) {
+            // 这里我们需要GLTFLoader，但由于CDN限制，我们创建一个简单的处理器
+            console.log('External model loading functionality would go here');
+            // 实际实现需要完整的GLTFLoader
+            alert('外部模型加载功能需要完整的Three.js生态系统。当前版本使用内置的高精度大脑模型。');
+        }
+
+        function onMouseDown(event) {
+            isDragging = true;
+            previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
+        }
+
+        function onMouseMove(event) {
+            if (isDragging && brainModel) {
+                const deltaMove = {
+                    x: event.clientX - previousMousePosition.x,
+                    y: event.clientY - previousMousePosition.y
+                };
+
+                const deltaRotationQuaternion = new THREE.Quaternion()
+                    .setFromEuler(new THREE.Euler(
+                        deltaMove.y * 0.01,
+                        deltaMove.x * 0.01,
+                        0,
+                        'XYZ'
+                    ));
+
+                brainModel.quaternion.multiplyQuaternions(deltaRotationQuaternion, brainModel.quaternion);
+
+                previousMousePosition = {
+                    x: event.clientX,
+                    y: event.clientY
+                };
+            }
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+        }
+
+        function onMouseClick(event) {
+            if (isDragging) return;
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(regionMeshes);
+
+            if (intersects.length > 0) {
+                const clickedObject = intersects[0].object;
+                const regionKey = clickedObject.userData.region;
+                const region = brainRegions[regionKey];
+
+                if (region) {
+                    updateInfoPanel(region);
+                    highlightRegion(clickedObject);
+                }
+            }
+        }
+
+        function onWheel(event) {
+            const delta = event.deltaY * 0.001;
+            camera.position.z += delta;
+            camera.position.z = Math.max(2, Math.min(10, camera.position.z));
+        }
+
+        function updateInfoPanel(region) {
+            const infoPanel = document.getElementById('info-panel');
+            
+            const functionsHtml = region.functions.map(func => `<li>${func}</li>`).join('');
+            
+            infoPanel.innerHTML = `
+                <h2>${region.name}</h2>
+                <p>${region.description}</p>
+                <div class="functions">
+                    <h3>主要功能</h3>
+                    <ul>${functionsHtml}</ul>
+                </div>
+                <div class="medical-info">
+                    <h4>临床意义</h4>
+                    <p>${region.medicalInfo}</p>
+                </div>
+            `;
+        }
