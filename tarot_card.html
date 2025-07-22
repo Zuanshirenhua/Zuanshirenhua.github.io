@@ -209,9 +209,12 @@
 
             // 加载纹理和创建卡牌
             loadTextures().then(() => {
-                createCards();
+                createCards(); // 创建卡牌但不显示
+                repositionCards(); // 初始排列
+                cards.forEach(card => card.visible = true); // 全部显示
+                renderer.render(scene, camera); // ✅ 预渲染一帧（稳定场景）
                 document.getElementById('loading').style.display = 'none';
-                animate();
+                animate(); // ✅ 最后一刻进入无限动画循环
             });
 
             // 事件监听
