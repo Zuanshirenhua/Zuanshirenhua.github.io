@@ -514,20 +514,10 @@
             if (selectedCard) {
                 selectedCard.userData.isSelected = false;
                 selectedCard.userData.isFlipped = false;
-                selectedCard.rotation.y = Math.PI;
+                selectedCard.rotation.y = 0;
                 selectedCard.scale.set(1, 1, 1);
                 selectedCard = null;
             }
-
-            // 🔁 额外加这一段：重置所有卡牌为背面
-            cards.forEach(card => {
-                if (card.userData.isFlipped) {
-                    card.rotation.y = Math.PI; // 正面转回背面
-                    card.userData.isFlipped = false;
-                }
-                card.userData.isSelected = false;
-                card.scale.set(1, 1, 1);
-            });
             
             // 洗牌动画
             const shufflePromises = cards.map((card, index) => {
