@@ -499,6 +499,25 @@
             animate();
         }
 
+        function animateScale(card, fromScale, toScale, duration = 600) {
+            const startTime = Date.now();
+
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);  // 缓动
+
+                    const newScale = fromScale.clone().lerp(toScale, eased);
+                    card.scale.set(newScale.x, newScale.y, newScale.z);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                }
+
+                animate();
+            }
+
         function shuffleCards() {
             if (isShuffling) return;
             
@@ -515,7 +534,7 @@
                 selectedCard.userData.isSelected = false;
                 selectedCard.userData.isFlipped = false;
                 selectedCard.rotation.y = 0;
-                selectedCard.scale.set(1, 1, 1);
+                animateScale(selectedCard, selectedCard.scale.clone(), new THREE.Vector3(1, 1, 1));
                 selectedCard = null;
             }
             
@@ -557,24 +576,25 @@
         }
 
         function repositionCards() {
-            // 重新随机排序
-            const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
-            
-            shuffledCards.forEach((card, i) => {
-                const totalCards = shuffledCards.length;
-                const angle = (i / (totalCards - 1)) * Math.PI - Math.PI / 2;
-                const radius = 8;
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius * 0.5 - 3;
-                const y = -2;
-                
+            const totalCards = cards.length;
+            const radius = 8; // 越大越平
+            const angleStep = Math.PI / 18; // 控制密度
+
+            cards.forEach((card, i) => {
+                const angle = (i - (totalCards - 1) / 2) * angleStep;
+
+                const x = Math.sin(angle) * radius;
+                const y = -2 + Math.abs(angle) * 0.3;  // 两侧略微抬起
+                const z = Math.cos(angle) * radius - radius;
+
                 const newPosition = new THREE.Vector3(x, y, z);
-                const newRotation = new THREE.Vector3(0, Math.PI, angle * 0.3);
-                
+                const newRotation = new THREE.Vector3(0, angle, 0);  // 正面朝向圆心
+
                 card.userData.originalPosition = newPosition;
                 card.userData.originalRotation = newRotation;
                 card.userData.isFlipped = false;
-                
+
+                card.rotation.y = 0; // 卡背朝外（正面朝内）
                 animateCardToPosition(card, newPosition, newRotation, 1000);
             });
         }
@@ -586,7 +606,7 @@
                 <h3>${card.name}</h3>
                 <p>${card.meaning}</p>
                 <p style="font-style: italic; color: #c4b5fd; margin-top: 15px;">
-                    这张牌代表着当前情况的重要信息，请结合自己的实际情况判断。
+                    这张牌代表着有关问题的重要信息，请结合实际情况判断。
                 </p>
             `;
             
