@@ -48,7 +48,7 @@
         }
 
         .shuffle-btn {
-            margin-top: 50px; 
+            margin-top: 25px; 
             background: linear-gradient(45deg, #8b5cf6, #a855f7);
             color: white;
             border: none;
@@ -416,7 +416,7 @@
             // 翻牌动画
             flipCard(card).then(() => {
                 // 移动到底部中央
-                const targetPosition = new THREE.Vector3(0, 0.5, 3);
+                const targetPosition = new THREE.Vector3(0, -1, 3);
                 const targetRotation = new THREE.Vector3(0, 0, 0);
                 animateCardToPosition(card, targetPosition, targetRotation, 800);
 
