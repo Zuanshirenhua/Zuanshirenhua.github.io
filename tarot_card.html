@@ -317,6 +317,13 @@
                 front.position.z = -0.05;  // 避免 Z-fighting
                 cardGroup.add(front);
 
+                // ✅ 设置 renderOrder，保证中间偏左的在最上层
+                const centerIndex = Math.floor(totalCards / 2); // 11
+                const priority = 100 - i; // 中间左边最大
+                cardGroup.renderOrder = priority;
+                back.renderOrder = priority;
+                front.renderOrder = priority + 0.1; // 保证 front > back
+
                 // 圆弧排布（计算位置）
                 const x = (i - (totalCards - 1) / 2) * spacing;
                 const y = -2;
