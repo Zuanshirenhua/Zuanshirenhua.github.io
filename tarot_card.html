@@ -251,8 +251,7 @@
             });
             cardBackMaterial = new THREE.MeshLambertMaterial({ 
                 map: cardBackTexture,
-                side: THREE.DoubleSide,
-                depthWrite: false
+                side: THREE.DoubleSide
             });
 
             // 加载卡牌正面纹理
@@ -270,8 +269,7 @@
                     cardFrontTextures[index] = texture;
                     cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
                         map: texture,
-                        side: THREE.DoubleSide,
-                        depthWrite: false
+                        side: THREE.DoubleSide
                     });
                 } catch (error) {
                     // 如果加载失败，创建一个纯色材质作为备用
@@ -322,7 +320,7 @@
 
                 // ✅ 设置 renderOrder，保证中间偏左的在最上层
                 const centerIndex = Math.floor(totalCards / 2); // 11
-                const priority = 100 - i; // 中间左边最大
+                const priority = 100 - Math.abs(i - (centerIndex - 1)); // 中间左边最大
                 cardGroup.renderOrder = priority;
                 back.renderOrder = priority;
                 front.renderOrder = priority + 0.1; // 保证 front > back
