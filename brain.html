@@ -242,28 +242,23 @@
         }
         
         function loadBrainModel() {
-            // 创建一个简单的加载器来处理GLB文件
-            const loader = new THREE.FileLoader();
-            loader.setResponseType('arraybuffer');
-            
-            // 先尝试简单的fetch方式
-            fetch('https://zuanshirenhua.github.io/images/3Dbrain.glb')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.arrayBuffer();
-                })
-                .then(data => {
-                    console.log('模型数据加载成功，但需要GLTFLoader来解析');
-                    // 如果成功获取数据但无法解析，使用默认模型
+            const loader = new THREE.GLTFLoader();
+
+            loader.load(
+                'https://zuanshirenhua.github.io/images/3Dbrain.glb',
+                function (gltf) {
+                    brain = gltf.scene;
+                    scene.add(brain);
+                    isLoaded = true;
+                    document.getElementById('loading').style.display = 'none';
+                },
+                undefined,
+                function (error) {
+                    console.warn('❌ 加载失败，使用默认大脑模型', error);
                     createDefaultBrain();
-                })
-                .catch(error => {
-                    console.warn('无法加载提供的模型，创建默认大脑模型', error);
-                    createDefaultBrain();
-                });
-        }
+                }
+            );
+}
         
         function createDefaultBrain() {
             // 创建一个简单的大脑模型作为备选
