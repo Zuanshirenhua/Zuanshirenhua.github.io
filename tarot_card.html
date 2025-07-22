@@ -48,6 +48,7 @@
         }
 
         .shuffle-btn {
+            margin-top: 30px;
             background: linear-gradient(45deg, #8b5cf6, #a855f7);
             color: white;
             border: none;
@@ -72,20 +73,21 @@
 
         .interpretation {
             position: absolute;
-            bottom: 20px;
+            bottom: 40px;                          /* ✅ 更靠上 */
             left: 50%;
-            transform: translateX(-50%);
-            max-width: 500px;
-            padding: 25px;
+            transform: translateX(-50%) translateY(0);  /* ✅ 去掉多余偏移 */
+            max-width: 700px;                     /* ✅ 拉宽 */
+            min-height: 180px;                    /* ✅ 拉高一些 */
+            padding: 40px 35px;                   /* ✅ 更大的留白 */
             background: rgba(139, 92, 246, 0.15);
-            border-radius: 15px;
+            border-radius: 20px;
             border: 1px solid rgba(224, 195, 252, 0.3);
             text-align: center;
+            line-height: 1.8;                     /* ✅ 行距更舒服 */
             opacity: 0;
-            transform: translateX(-50%) translateY(20px);
             transition: all 0.5s ease;
-            backdrop-filter: blur(10px);
-        }
+            backdrop-filter: blur(12px);
+            }
 
         .interpretation.show {
             opacity: 1;
