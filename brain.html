@@ -143,6 +143,8 @@
         let raycaster, mouse;
         let isLoaded = false;
         let threeJSLoaded = false;
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
         
         // 大脑区域信息数据库
         const brainRegions = {
