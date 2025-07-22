@@ -454,6 +454,9 @@
                 const endRotation = startRotation + Math.PI;
                 const duration = 600;
                 const startTime = Date.now();
+
+                const back = cardGroup.children[0];  // 默认是背面
+                const front = cardGroup.children[1]; // 默认是正面
                 
                 function animate() {
                     const elapsed = Date.now() - startTime;
@@ -462,6 +465,13 @@
                     // 使用缓动函数
                     const easedProgress = 1 - Math.pow(1 - progress, 3);
                     card.rotation.y = startRotation + (endRotation - startRotation) * easedProgress;
+
+                    if (progress > 0.5 && !cardGroup.userData.isFlipped) {
+                        // 翻转到一半时切换正反面可见性
+                        back.visible = false;
+                        front.visible = true;
+                        cardGroup.userData.isFlipped = true;
+                    }
                     
                     if (progress < 1) {
                         requestAnimationFrame(animate);
