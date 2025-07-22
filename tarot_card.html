@@ -320,6 +320,7 @@
                 const z = 0;
                 cardGroup.position.set(x, y, z);
                 cardGroup.rotation.set(0, 0, 0);
+                cardGroup.visible = false; // ✅ 一开始隐藏（避免闪）
                 
                 cardGroup.userData = {
                     card: tarotCards.major[i],
@@ -334,10 +335,11 @@
                 cards.push(cardGroup);
                 scene.add(cardGroup);
 
+                // ✅ 一次性 requestAnimationFrame 统一显示 & 排列
                 requestAnimationFrame(() => {
-                    repositionCards();  // 等一帧后再布局可缓解闪屏
+                    cards.forEach(card => card.visible = true); // 统一显示
+                    repositionCards(); // 再执行圆弧排列动画
                 });
-            }
         }
 
         function setupEventListeners() {
