@@ -188,6 +188,7 @@
         let hoveredCard = null;
         let selectedCard = null;
         let isShuffling = false;
+        let canFlip = false;
 
         // 材质和纹理
         let cardBackTexture, cardFrontTextures = [];
@@ -321,6 +322,7 @@
                 // ✅ 卡面朝内，翻转后才能看到
                 const front = new THREE.Mesh(geometry, cardFrontMaterials[i]);
                 front.rotation.y = Math.PI;
+                front.rotation.x = Math.PI;
                 front.position.z = -0.01;  // 避免 Z-fighting
                 cardGroup.add(front);
 
@@ -354,7 +356,14 @@
             window.addEventListener('click', onMouseClick, false);
             
             // 洗牌按钮
-            document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
+            document.getElementById('shuffleBtn').addEventListener('click', () => {
+                shuffleCards();  // 开始洗牌动画
+
+                // ✅ 洗牌后才允许点击卡牌
+                setTimeout(() => {
+                    canFlip = true;
+                }, 3000);  // 这里的 3000 要与你的洗牌动画持续时间保持一致
+            });
             
             // 窗口大小调整
             window.addEventListener('resize', onWindowResize, false);
@@ -367,7 +376,9 @@
             checkHover();
         }
 
+        
         function onMouseClick(event) {
+            if (!canFlip || selectedCard) return;
             if (isShuffling) return;
             
             raycaster.setFromCamera(mouse, camera);
