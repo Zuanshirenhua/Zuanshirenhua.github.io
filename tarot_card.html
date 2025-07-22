@@ -229,7 +229,7 @@
             scene.add(ambientLight);
 
             // 主光源
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
             directionalLight.position.set(-1, 1, 1);
             directionalLight.castShadow = true;
             directionalLight.shadow.mapSize.width = 2048;
@@ -271,8 +271,6 @@
                     cardFrontTextures[index] = texture;
                     cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
                         map: texture,
-                        emissive: new THREE.Color(0xffffff),
-                        emissiveIntensity: 0.3,
                         depthTest: false,
                         side: THREE.DoubleSide
                     });
@@ -629,11 +627,12 @@
                         if (!hasShuffledOnce) {
                             shuffleBtn.textContent = '再来一次';
                             hasShuffledOnce = true;
+                        } else {
+                            shuffleBtn.textContent = '再来一次';
                         }
                     }, 1500);
                 }, 500);
             });
-
         }
 
         function repositionCards() {
