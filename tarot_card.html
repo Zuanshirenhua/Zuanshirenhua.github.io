@@ -140,22 +140,32 @@
 
         .particle {
             position: fixed;
-            width: 6px;
-            height: 6px;
-            background: radial-gradient(white, #c084fc);
+            width: 4px;
+            height: 18px; /* 拉长 */
+            background: linear-gradient(to bottom, #fff, #c084fc, transparent); /* 上亮下透明 */
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
-            opacity: 0.8;
-            animation: fadeOut 0.6s forwards;
+            opacity: 0.7;
+            transform: rotate(45deg); /* 倾斜角度更流动 */
+            animation: streamFade 0.6s forwards;
         }
 
-        @keyframes fadeOut {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+        @keyframes streamFade {
+            0% {
+                transform: scale(1) rotate(45deg);
+                opacity: 1;
+                filter: blur(0px);
+            }
+            100% {
+                transform: scale(1.8, 0.2) rotate(45deg); /* 拉长但变细 */
+                opacity: 0;
+                filter: blur(2px);
+            }
         }
     </style>
 </head>
+
 <body>
     <div id="container">
         <div class="ui-overlay">
@@ -735,7 +745,7 @@
             const wand = document.getElementById('wandCursor');
             wand.style.left = `${e.clientX}px`;
             wand.style.top = `${e.clientY}px`;
-            
+
             // ✨ 拖尾星光
             const particle = document.createElement('div');
             particle.classList.add('particle');
@@ -744,6 +754,31 @@
 
             document.body.appendChild(particle);
             setTimeout(() => particle.remove(), 600);
+        });
+
+        // 节流变量
+        let lastTrailTime = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            const wand = document.getElementById('wandCursor');
+            wand.style.left = `${e.clientX}px`;
+            wand.style.top = `${e.clientY}px`;
+
+            const now = Date.now();
+            if (now - lastTrailTime > 16) {  // 每帧 ~60fps
+                lastTrailTime = now;
+
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const offsetX = (Math.random() - 0.5) * 8;
+                const offsetY = (Math.random() - 0.5) * 8;
+
+                particle.style.left = `${e.clientX + offsetX}px`;
+                particle.style.top = `${e.clientY + offsetY}px`;
+
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 600);
+            }
         });
     </script>
 </body>
