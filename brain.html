@@ -246,13 +246,14 @@
             loader.load('https://zuanshirenhua.github.io/images/3Dbrain.glb', function (gltf) {
                 const model = gltf.scene;
 
-                // 👇 模型初始角度修正
-                model.rotation.x = -Math.PI / 2;
-                model.rotation.z = Math.PI;
-                
-                // 👇 缩放 & 位置
-                model.scale.set(1.5, 1.5, 1.5);
-                model.position.set(0, -0.2, 0);
+                // ✅ 让模型在Y轴转180度，使其“翻正”
+                brain.rotation.x = Math.PI;       // 原地翻转（上下颠倒）
+                // brain.rotation.z = Math.PI;       // 视需要可加：前后反转
+
+                // 可选：缩放或居中
+                brain.scale.set(1, 1, 1);         // 如需缩放模型
+                brain.position.set(0, -0.5, 0);   // 若模型偏移太高
+
 
                 brain = model;
                 scene.add(brain);
@@ -262,6 +263,7 @@
             }, undefined, function (error) {
                 console.error('加载模型失败：', error);
             });
+        }
         
         function createDefaultBrain() {
             // 创建一个简单的大脑模型作为备选
