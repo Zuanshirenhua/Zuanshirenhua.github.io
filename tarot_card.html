@@ -469,11 +469,11 @@
                     const easedProgress = 1 - Math.pow(1 - progress, 3);
                     card.rotation.y = startRotation + (endRotation - startRotation) * easedProgress;
 
-                    if (progress > 0.5 && !cardGroup.userData.isFlipped) {
+                    if (progress > 0.5 && !card.userData.isFlipped) {
                         // 翻转到一半时切换正反面可见性
                         back.visible = false;
                         front.visible = true;
-                        cardGroup.userData.isFlipped = true;
+                        card.userData.isFlipped = true;
                     }
                     
                     if (progress < 1) {
