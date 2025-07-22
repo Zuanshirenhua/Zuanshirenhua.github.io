@@ -333,6 +333,10 @@
 
                 cards.push(cardGroup);
                 scene.add(cardGroup);
+
+                requestAnimationFrame(() => {
+                    repositionCards();  // 等一帧后再布局可缓解闪屏
+                });
             }
         }
 
@@ -577,7 +581,7 @@
 
         function repositionCards() {
             const totalCards = cards.length;
-            const radius = 18;               // ✅ 加大横向展开距离
+            const radius = 22;               // ✅ 加大横向展开距离
             const angleStep = Math.PI / 36;  // ✅ 更小角度 → 更水平
             const maxY = 1.5;                // ✅ 扇形弧度高度
 
