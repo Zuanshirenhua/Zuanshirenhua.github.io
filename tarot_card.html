@@ -251,6 +251,7 @@
             });
             cardBackMaterial = new THREE.MeshLambertMaterial({ 
                 map: cardBackTexture,
+                depthTest: false,
                 side: THREE.DoubleSide
             });
 
@@ -269,6 +270,7 @@
                     cardFrontTextures[index] = texture;
                     cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
                         map: texture,
+                        depthTest: false,
                         side: THREE.DoubleSide
                     });
                 } catch (error) {
