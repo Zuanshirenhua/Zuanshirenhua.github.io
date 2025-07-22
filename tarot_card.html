@@ -521,9 +521,11 @@
 
             // 🔁 额外加这一段：重置所有卡牌为背面
             cards.forEach(card => {
+                if (card.userData.isFlipped) {
+                    card.rotation.y = Math.PI; // 正面转回背面
+                    card.userData.isFlipped = false;
+                }
                 card.userData.isSelected = false;
-                card.userData.isFlipped = false;
-                card.rotation.y = Math.PI;
                 card.scale.set(1, 1, 1);
             });
             
