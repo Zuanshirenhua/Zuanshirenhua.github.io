@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 塔罗牌占卜</title>
+    <title>塔罗牌日运占卜</title>
     <style>
         * {
             margin: 0;
@@ -595,7 +595,7 @@
                 const angle = (i - (totalCards - 1) / 2) * angleStep;
 
                 const x = Math.sin(angle) * radius;
-                const z = Math.cos(angle) * radius * 0.2 - 2;  // ✅ 更少 z 重叠
+                const z = Math.cos(angle) * radius * 0.5 - 2;  // ✅ 更少 z 重叠
                 const normalized = (i - (totalCards - 1) / 2) / ((totalCards - 1) / 2);
                 const y = -2 + maxY * (1 - normalized * normalized); // ✅ 顶部高，两边低
 
@@ -618,7 +618,7 @@
                 <h3>${card.name}</h3>
                 <p>${card.meaning}</p>
                 <p style="font-style: italic; color: #c4b5fd; margin-top: 15px;">
-                    这张牌代表着有关问题的重要信息，请结合实际情况判断。
+                    祝你今日好运🍀。
                 </p>
             `;
             
