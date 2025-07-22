@@ -626,15 +626,14 @@
                     setTimeout(() => {
                         isShuffling = false;
                         shuffleBtn.disabled = false;
-                        shuffleBtn.textContent = '洗牌';
+                        if (!hasShuffledOnce) {
+                            shuffleBtn.textContent = '再来一次';
+                            hasShuffledOnce = true;
+                        }
                     }, 1500);
                 }, 500);
             });
 
-            if (!hasShuffledOnce) {
-                shuffleBtn.textContent = '再来一次';
-                hasShuffledOnce = true;
-            }
         }
 
         function repositionCards() {
