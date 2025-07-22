@@ -164,10 +164,34 @@
                 filter: blur(2px);
             }
         }
+        
+        #backButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #ffffff;
+            background: rgba(128, 0, 255, 0.3);
+            border: 1px solid #c9a3ff;
+            border-radius: 8px;
+            padding: 6px 12px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 999;
+            box-shadow: 0 0 8px #c9a3ff;
+            transition: background 0.3s, transform 0.2s;
+            }
+
+            #backButton:hover {
+            background: rgba(128, 0, 255, 0.5);
+            transform: scale(1.05);
+            }
     </style>
 </head>
 
 <body>
+    <a href="hobbies.html" id="backButton">← 返回</a>
+
     <div id="container">
         <div class="ui-overlay">
             <h1 class="title">✦ 塔罗牌日运占卜 ✦</h1>
