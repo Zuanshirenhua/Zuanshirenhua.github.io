@@ -247,7 +247,14 @@
                 'https://zuanshirenhua.github.io/images/3Dbrain.glb',
                 function (gltf) {
                     brain = gltf.scene;
-                    brain.scale.set(1.5, 1.5, 1.5); // 如模型过小可以调大
+                    // ✅ 设置缩放（根据需要调小调大）
+                    brain.scale.set(1, 1, 1);
+
+                    // ✅ 设置初始位置居中
+                    brain.position.set(0, -0.3, 0);
+
+                    // ✅ 设置初始旋转（比如让用户从正前方看到大脑）
+                    brain.rotation.y = Math.PI; // 或 Math.PI / 2，试试看哪个角度好
                     scene.add(brain);
                     isLoaded = true;
                     document.getElementById('loading').style.display = 'none';
