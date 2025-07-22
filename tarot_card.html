@@ -430,9 +430,12 @@
             // 翻牌动画
             flipCard(card).then(() => {
                 // 移动到底部中央
-                displayGroup.scale.set(2, 2, 2); // ✅ 放大
-                displayGroup.position.set(0, 0.5, 3); // ✅ 正中央略上方
-                displayGroup.rotation.set(0, 0, 0);
+                const targetPosition = new THREE.Vector3(0, 0.5, 3);
+                const targetRotation = new THREE.Vector3(0, 0, 0);
+                animateCardToPosition(card, targetPosition, targetRotation, 800);
+
+                // ✅ 放大（没有动画，可以加动画缩放，如果需要我可以帮你写）
+                animateScaleTo(card, new THREE.Vector3(2, 2, 2), 600); 
                 
                 // 显示解释
                 showInterpretation(card.userData.card);
@@ -490,6 +493,26 @@
             animate();
         }
 
+        function animateScaleTo(card, targetScale, duration = 500) {
+            const startScale = card.scale.clone();
+            const startTime = Date.now();
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);  // 缓动
+
+                const newScale = startScale.clone().lerp(targetScale, eased);
+                card.scale.set(newScale.x, newScale.y, newScale.z);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
         function shuffleCards() {
             if (isShuffling) return;
             
@@ -506,6 +529,7 @@
                 selectedCard.userData.isSelected = false;
                 selectedCard.userData.isFlipped = false;
                 selectedCard.rotation.y = Math.PI;
+                selectedCard.scale.set(1, 1, 1);
                 selectedCard = null;
             }
             
