@@ -228,6 +228,9 @@
         let cardBackTexture, cardFrontTextures = [];
         let cardBackMaterial, cardFrontMaterials = [];
 
+        let prevMouseX = null;
+        let prevMouseY = null;
+
         init();
 
         function init() {
@@ -765,23 +768,32 @@
             wand.style.left = `${e.clientX}px`;
             wand.style.top = `${e.clientY}px`;
 
-            const now = Date.now();
-            if (now - lastTrailTime > 16) {  // 每帧 ~60fps
-                lastTrailTime = now;
+            // 如果有上一个位置，计算方向
+            if (prevMouseX !== null && prevMouseY !== null) {
+                const dx = e.clientX - prevMouseX;
+                const dy = e.clientY - prevMouseY;
+
+                // 反方向单位向量
+                const len = Math.sqrt(dx * dx + dy * dy);
+                const vx = len > 0 ? -dx / len : 0;
+                const vy = len > 0 ? -dy / len : 0;
+
+                // 拖尾位置设置为反方向偏移
+                const offset = 20;
+                const px = e.clientX + vx * offset + (Math.random() - 0.5) * 8;
+                const py = e.clientY + vy * offset + (Math.random() - 0.5) * 8;
 
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
-
-                // 让流光随机方向偏移、但主要向右飘
-                const offsetX = (Math.random() - 0.5) * 20;
-                const offsetY = (Math.random() - 0.5) * 20;
-
-                particle.style.left = `${e.clientX + offsetX}px`;
-                particle.style.top = `${e.clientY + offsetY}px`;
-
+                particle.style.left = `${px}px`;
+                particle.style.top = `${py}px`;
                 document.body.appendChild(particle);
                 setTimeout(() => particle.remove(), 600);
             }
+
+            // 更新鼠标位置
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
         });
     </script>
 </body>
