@@ -320,6 +320,9 @@
                 front.position.z = -0.05;  // 避免 Z-fighting
                 cardGroup.add(front);
 
+                back.visible = true;    // ✅ 显示背面
+                front.visible = false;  // ✅ 隐藏正面
+
                 // ✅ 设置 renderOrder，保证中间偏左的在最上层
                 const centerIndex = Math.floor(totalCards / 2); // 11
                 const priority = 100 - Math.abs(i - (centerIndex - 1)); // 中间左边最大
@@ -455,8 +458,8 @@
                 const duration = 600;
                 const startTime = Date.now();
 
-                const back = cardGroup.children[0];  // 默认是背面
-                const front = cardGroup.children[1]; // 默认是正面
+                const back = card.children[0];  // 默认是背面
+                const front = card.children[1]; // 默认是正面
                 
                 function animate() {
                     const elapsed = Date.now() - startTime;
