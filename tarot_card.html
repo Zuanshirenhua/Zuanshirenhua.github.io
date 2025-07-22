@@ -199,6 +199,7 @@
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             document.getElementById('container').appendChild(renderer.domElement);
+            renderer.sortObjects = true;
 
             // 射线投射器和鼠标
             raycaster = new THREE.Raycaster();
