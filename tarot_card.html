@@ -490,7 +490,7 @@
                         requestAnimationFrame(animate);
                     } else {
                         card.userData.isFlipped = !flipped;
-                        card=userData.swapped = false;
+                        card.userData.swapped = false;
                         resolve();
                     }
                 }
@@ -578,9 +578,19 @@
                 selectedCard.userData.isSelected = false;
                 selectedCard.userData.isFlipped = false;
                 selectedCard.rotation.y = 0;
+                selectedCard.children[0].visible = true;   // 显示背面
+                selectedCard.children[1].visible = false;  // 隐藏正面
                 animateScale(selectedCard, selectedCard.scale.clone(), new THREE.Vector3(1, 1, 1));
                 selectedCard = null;
             }
+
+            cards.forEach(card => {
+                card.userData.isFlipped = false;
+                card.userData.isSelected = false;
+                card.rotation.y = 0;
+                card.children[0].visible = true;
+                card.children[1].visible = false;
+            });
             
             // 洗牌动画
             const shufflePromises = cards.map((card, index) => {
