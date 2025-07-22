@@ -311,7 +311,7 @@
                 const front = new THREE.Mesh(geometry, cardFrontMaterials[i]);
                 front.rotation.y = Math.PI;
                 front.rotation.x = Math.PI;
-                front.position.z = -0.01;  // 避免 Z-fighting
+                front.position.z = -0.05;  // 避免 Z-fighting
                 cardGroup.add(front);
 
                 // 圆弧排布（计算位置）
