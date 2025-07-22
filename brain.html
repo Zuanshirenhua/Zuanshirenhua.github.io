@@ -243,22 +243,20 @@
         
         function loadBrainModel() {
             const loader = new THREE.GLTFLoader();
+
             loader.load('https://zuanshirenhua.github.io/images/3Dbrain.glb', function (gltf) {
-                const brain = gltf.scene;
+                brain = gltf.scene;
 
-                // ✅ 让模型在Y轴转180度，使其“翻正”
-                brain.rotation.x = Math.PI;       // 原地翻转（上下颠倒）
-                // brain.rotation.z = Math.PI;       // 视需要可加：前后反转
+                // ✅ 让模型在Y轴或Z轴旋转180度，调整为正面朝上
+                brain.rotation.x = Math.PI;
 
-                // 可选：缩放或居中
-                brain.scale.set(1, 1, 1);         // 如需缩放模型
-                brain.position.set(0, -0.5, 0);   // 若模型偏移太高
+                // ✅ 可选：缩放或居中位置
+                brain.scale.set(1, 1, 1);
+                brain.position.set(0, -0.5, 0);
 
-
-                brain = model;
                 scene.add(brain);
-
                 isLoaded = true;
+
                 document.getElementById('loading').style.display = 'none';
             }, undefined, function (error) {
                 console.error('加载模型失败：', error);
