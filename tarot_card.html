@@ -139,16 +139,32 @@
         }
 
         .particle {
-            position: fixed;
-            width: 4px;
-            height: 18px; /* 拉长 */
-            background: linear-gradient(to bottom, #fff, #c084fc, transparent); /* 上亮下透明 */
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0.7;
-            transform: rotate(45deg); /* 倾斜角度更流动 */
-            animation: streamFade 0.6s forwards;
+            .particle {
+                position: fixed;
+                width: 20px;
+                height: 2px;
+                background: linear-gradient(to right, #fff, #c084fc);
+                border-radius: 999px;
+                pointer-events: none;
+                z-index: 9998;
+                opacity: 0.8;
+                transform: rotate(45deg);
+                animation: streamFade 0.6s forwards;
+                filter: drop-shadow(0 0 4px #a855f7) drop-shadow(0 0 8px #c084fc);
+            }
+
+            @keyframes streamFade {
+                0% {
+                    transform: scale(1) rotate(45deg);
+                    opacity: 1;
+                    filter: blur(0px);
+                }
+                100% {
+                    transform: scale(2, 0.5) rotate(45deg);
+                    opacity: 0;
+                    filter: blur(2px);
+                }
+            }
         }
 
         @keyframes streamFade {
@@ -770,11 +786,16 @@
 
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
-                const offsetX = (Math.random() - 0.5) * 8;
-                const offsetY = (Math.random() - 0.5) * 8;
+
+                // 让流光随机方向偏移、但主要向右飘
+                const offsetX = (Math.random() - 0.3) * 30;
+                const offsetY = (Math.random() - 0.5) * 10;
 
                 particle.style.left = `${e.clientX + offsetX}px`;
                 particle.style.top = `${e.clientY + offsetY}px`;
+
+                // 你也可以动态改变 rotate 角度让每条线都有变化感
+                particle.style.transform = `rotate(${40 + Math.random() * 20}deg)`;
 
                 document.body.appendChild(particle);
                 setTimeout(() => particle.remove(), 600);
