@@ -577,24 +577,28 @@
 
         function repositionCards() {
             const totalCards = cards.length;
-            const radius = 8; // 越大越平
-            const angleStep = Math.PI / 18; // 控制密度
+            const radius = 10;
+            const angleStep = Math.PI / 24;
 
             cards.forEach((card, i) => {
                 const angle = (i - (totalCards - 1) / 2) * angleStep;
 
                 const x = Math.sin(angle) * radius;
-                const y = -2 + Math.abs(angle) * 0.3;  // 两侧略微抬起
                 const z = Math.cos(angle) * radius - radius;
 
+                // ✅ 让卡牌上下拱起（重点！）
+                const maxY = 2.5;  // 控制拱的最高点
+                const normalized = (i - (totalCards - 1) / 2) / ((totalCards - 1) / 2);
+                const y = -2 + maxY * (1 - normalized * normalized);  // 抛物线 y = -x^2
+
                 const newPosition = new THREE.Vector3(x, y, z);
-                const newRotation = new THREE.Vector3(0, angle, 0);  // 正面朝向圆心
+                const newRotation = new THREE.Vector3(0, angle, 0);
 
                 card.userData.originalPosition = newPosition;
                 card.userData.originalRotation = newRotation;
                 card.userData.isFlipped = false;
 
-                card.rotation.y = 0; // 卡背朝外（正面朝内）
+                card.rotation.y = 0;
                 animateCardToPosition(card, newPosition, newRotation, 1000);
             });
         }
