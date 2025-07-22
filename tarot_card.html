@@ -177,6 +177,7 @@
         let selectedCard = null;
         let isShuffling = false;
         let canFlip = false;
+        let hasShuffledOnce = false;
 
         // 材质和纹理
         let cardBackTexture, cardFrontTextures = [];
@@ -270,6 +271,8 @@
                     cardFrontTextures[index] = texture;
                     cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
                         map: texture,
+                        emissive: new THREE.Color(0xffffff),
+                        emissiveIntensity: 0.3,
                         depthTest: false,
                         side: THREE.DoubleSide
                     });
@@ -627,6 +630,11 @@
                     }, 1500);
                 }, 500);
             });
+
+            if (!hasShuffledOnce) {
+                shuffleBtn.textContent = '再来一次';
+                hasShuffledOnce = true;
+            }
         }
 
         function repositionCards() {
