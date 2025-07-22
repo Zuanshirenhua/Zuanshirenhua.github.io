@@ -244,7 +244,7 @@
         function loadBrainModel() {
             const loader = new THREE.GLTFLoader();
             loader.load('https://zuanshirenhua.github.io/images/3Dbrain.glb', function (gltf) {
-                const model = gltf.scene;
+                const brain = gltf.scene;
 
                 // ✅ 让模型在Y轴转180度，使其“翻正”
                 brain.rotation.x = Math.PI;       // 原地翻转（上下颠倒）
