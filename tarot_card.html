@@ -314,7 +314,7 @@
                 const front = new THREE.Mesh(geometry, cardFrontMaterials[i]);
                 front.rotation.y = Math.PI;
                 front.rotation.x = Math.PI;
-                front.position.z = -0.2;  // 避免 Z-fighting
+                front.position.z = -0.05;  // 避免 Z-fighting
                 cardGroup.add(front);
 
                 // 圆弧排布（计算位置）
@@ -595,7 +595,7 @@
                 const angle = (i - (totalCards - 1) / 2) * angleStep;
 
                 const x = Math.sin(angle) * radius;
-                const z = Math.cos(angle) * radius * 0.5 - 2;  // ✅ 更少 z 重叠
+                const z = Math.cos(angle) * radius * 0.2 - 2;  // ✅ 更少 z 重叠
                 const normalized = (i - (totalCards - 1) / 2) / ((totalCards - 1) / 2);
                 const y = -2 + maxY * (1 - normalized * normalized); // ✅ 顶部高，两边低
 
