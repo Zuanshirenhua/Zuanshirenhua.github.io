@@ -48,7 +48,7 @@
         }
 
         .shuffle-btn {
-            margin-top: 25px; 
+            margin-top: 10px; 
             background: linear-gradient(45deg, #8b5cf6, #a855f7);
             color: white;
             border: none;
@@ -518,6 +518,14 @@
                 selectedCard.scale.set(1, 1, 1);
                 selectedCard = null;
             }
+
+            // 🔁 额外加这一段：重置所有卡牌为背面
+            cards.forEach(card => {
+                card.userData.isSelected = false;
+                card.userData.isFlipped = false;
+                card.rotation.y = Math.PI;
+                card.scale.set(1, 1, 1);
+            });
             
             // 洗牌动画
             const shufflePromises = cards.map((card, index) => {
@@ -586,7 +594,7 @@
                 <h3>${card.name}</h3>
                 <p>${card.meaning}</p>
                 <p style="font-style: italic; color: #c4b5fd; margin-top: 15px;">
-                    这张牌代表着当前情况的重要信息，请结合自己的实际情况进行思考。
+                    这张牌代表着当前情况的重要信息，请结合自己的实际情况判断。
                 </p>
             `;
             
