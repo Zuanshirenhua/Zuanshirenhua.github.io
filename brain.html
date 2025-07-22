@@ -243,31 +243,25 @@
         
         function loadBrainModel() {
             const loader = new THREE.GLTFLoader();
-            loader.load(
-                'https://zuanshirenhua.github.io/images/3Dbrain.glb',
-                function (gltf) {
-                    brain = gltf.scene;
-                    // ✅ 设置缩放（根据需要调小调大）
-                    brain.scale.set(1, 1, 1);
+            loader.load('https://zuanshirenhua.github.io/images/3Dbrain.glb', function (gltf) {
+                const model = gltf.scene;
 
-                    // ✅ 设置初始位置居中
-                    brain.position.set(0, -0.3, 0);
+                // 👇 模型初始角度修正
+                model.rotation.x = -Math.PI / 2;
+                model.rotation.z = Math.PI;
+                
+                // 👇 缩放 & 位置
+                model.scale.set(1.5, 1.5, 1.5);
+                model.position.set(0, -0.2, 0);
 
-                    // ✅ 设置初始旋转（比如让用户从正前方看到大脑）
-                    brain.rotation.y = Math.PI; // 或 Math.PI / 2，试试看哪个角度好
-                    scene.add(brain);
-                    isLoaded = true;
-                    document.getElementById('loading').style.display = 'none';
-                },
-                function (xhr) {
-                    console.log(`加载进度: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
-                },
-                function (error) {
-                    console.warn('❌ 模型加载失败，改用默认模型', error);
-                    createDefaultBrain();
-                }
-            );
-        }
+                brain = model;
+                scene.add(brain);
+
+                isLoaded = true;
+                document.getElementById('loading').style.display = 'none';
+            }, undefined, function (error) {
+                console.error('加载模型失败：', error);
+            });
         
         function createDefaultBrain() {
             // 创建一个简单的大脑模型作为备选
