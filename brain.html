@@ -243,22 +243,24 @@
         
         function loadBrainModel() {
             const loader = new THREE.GLTFLoader();
-
             loader.load(
                 'https://zuanshirenhua.github.io/images/3Dbrain.glb',
                 function (gltf) {
                     brain = gltf.scene;
+                    brain.scale.set(1.5, 1.5, 1.5); // 如模型过小可以调大
                     scene.add(brain);
                     isLoaded = true;
                     document.getElementById('loading').style.display = 'none';
                 },
-                undefined,
+                function (xhr) {
+                    console.log(`加载进度: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+                },
                 function (error) {
-                    console.warn('❌ 加载失败，使用默认大脑模型', error);
+                    console.warn('❌ 模型加载失败，改用默认模型', error);
                     createDefaultBrain();
                 }
             );
-}
+        }
         
         function createDefaultBrain() {
             // 创建一个简单的大脑模型作为备选
