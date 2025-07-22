@@ -122,6 +122,38 @@
             font-size: 1.2rem;
             text-align: center;
         }
+
+        #wandCursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 2rem;
+            transform: translate(-50%, -50%);
+            animation: twinkle 0.6s infinite ease-in-out;
+            filter: drop-shadow(0 0 6px #a855f7) drop-shadow(0 0 12px #c084fc);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) rotate(10deg); }
+        }
+
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(white, #c084fc);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.8;
+            animation: fadeOut 0.6s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -139,6 +171,8 @@
             <!-- 解释将在这里显示 -->
         </div>
     </div>
+
+    <div id="wandCursor">🪄</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
@@ -695,6 +729,22 @@
             
             renderer.render(scene, camera);
         }
+
+        // 🪄 跟随魔法棒
+        document.addEventListener('mousemove', (e) => {
+            const wand = document.getElementById('wandCursor');
+            wand.style.left = `${e.clientX}px`;
+            wand.style.top = `${e.clientY}px`;
+            
+            // ✨ 拖尾星光
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = `${e.clientX + (Math.random() - 0.5) * 10}px`;
+            particle.style.top = `${e.clientY + (Math.random() - 0.5) * 10}px`;
+
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 600);
+        });
     </script>
 </body>
 </html>
