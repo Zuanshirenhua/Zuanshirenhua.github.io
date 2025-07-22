@@ -395,7 +395,7 @@
 
         function createRealisticBrainModel() {
             const loader = new THREE.GLTFLoader();
-            loader.load('images/3Dbrain.glb', function (gltf) {
+            loader.load('https://zuanshirenhua.github.io/images/3Dbrain.glb', function (gltf) {
                 brainModel = gltf.scene;
                 brainModel.scale.set(1.5, 1.5, 1.5);  // 可以根据需要调整缩放
                 scene.add(brainModel);
