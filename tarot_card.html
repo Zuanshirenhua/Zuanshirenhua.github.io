@@ -251,7 +251,8 @@
             });
             cardBackMaterial = new THREE.MeshLambertMaterial({ 
                 map: cardBackTexture,
-                side: THREE.DoubleSide 
+                side: THREE.DoubleSide,
+                depthWrite: false
             });
 
             // 加载卡牌正面纹理
@@ -269,7 +270,8 @@
                     cardFrontTextures[index] = texture;
                     cardFrontMaterials[index] = new THREE.MeshLambertMaterial({ 
                         map: texture,
-                        side: THREE.DoubleSide 
+                        side: THREE.DoubleSide,
+                        depthWrite: false
                     });
                 } catch (error) {
                     // 如果加载失败，创建一个纯色材质作为备用
