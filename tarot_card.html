@@ -635,8 +635,30 @@
                 animate();
             }
 
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         function shuffleCards() {
             if (isShuffling) return;
+
+            // 1. 打乱塔罗牌数据顺序
+            shuffleArray(tarotCards.major);
+
+            // 2. 重新绑定每张卡牌的 front 材质和 userData
+            cards.forEach((card, index) => {
+                const newCardData = tarotCards.major[index];
+
+                // 替换 front 材质
+                card.children[1].material = cardFrontMaterials[index];
+
+                // 更新卡牌数据
+                card.userData.card = newCardData;
+                card.userData.index = index;
+            });
             
             isShuffling = true;
             const shuffleBtn = document.getElementById('shuffleBtn');
