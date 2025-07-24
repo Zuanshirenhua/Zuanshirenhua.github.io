@@ -645,18 +645,24 @@
         function shuffleCards() {
             if (isShuffling) return;
 
-            // 1. 打乱塔罗牌数据顺序
-            shuffleArray(tarotCards.major);
+            // 构造牌面数据与材质绑定的组合数组
+            const pairedCards = tarotCards.major.map((card, index) => ({
+                card,
+                material: cardFrontMaterials[index]
+            }));
 
-            // 2. 重新绑定每张卡牌的 front 材质和 userData
+            // 打乱组合数组
+            shuffleArray(pairedCards);
+
+            // 将打乱后的顺序应用到实际 Three.js 卡片
             cards.forEach((card, index) => {
-                const newCardData = tarotCards.major[index];
+                const pair = pairedCards[index];
 
-                // 替换 front 材质
-                card.children[1].material = cardFrontMaterials[index];
+                // 替换材质
+                card.children[1].material = pair.material;
 
-                // 更新卡牌数据
-                card.userData.card = newCardData;
+                // 替换文字与解释数据
+                card.userData.card = pair.card;
                 card.userData.index = index;
             });
             
