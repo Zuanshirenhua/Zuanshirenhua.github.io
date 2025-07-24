@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>我去过的国家</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script>
+  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+  <style>
+    html, body, #container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container"></div>
+<div id="infoBox" style="
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 280px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  font-family: sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: none;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+"></div>
+
+<script>
+  // 合并台湾到中国（避免地图错误）
+  const mapFeatures = Highcharts.maps['custom/world'].features;
+  let chinaFeature, taiwanFeature;
+
+  for (let i = mapFeatures.length - 1; i >= 0; i--) {
+    const f = mapFeatures[i];
+    if (f.id === 'CN') {
+      chinaFeature = mapFeatures.splice(i, 1)[0]; // 移除中国并保存
+    } else if (f.id === 'TW') {
+      taiwanFeature = f;
+    }
+  }
+
+  if (chinaFeature && taiwanFeature) {
+    taiwanFeature.geometry = {
+      type: 'MultiPolygon',
+      coordinates: [
+        ...Array.isArray(taiwanFeature.geometry.coordinates[0])
+          ? [taiwanFeature.geometry.coordinates]
+          : taiwanFeature.geometry.coordinates,
+        ...chinaFeature.geometry.coordinates
+      ]
+    };
+    taiwanFeature.properties.name = 'China';
+    delete taiwanFeature.properties['hc-middle-x'];
+    delete taiwanFeature.properties['hc-middle-y'];
+  }
+
+  // 国家数据
+  const visitedData = [
+    ['cn', 1], ['fr', 1], ['gb', 1], ['dk', 1],['it', 1], ['sg', 1],
+    ['au', 1], ['be', 1], ['nl', 1], ['es', 1], ['va', 1], ['mc', 1],
+    ['ch', 1], ['se', 1], ['fi', 1], ['at', 1], ['hu', 1], ['cz', 1],
+    ['pt', 1], ['eg', 1], ['tw', 1]
+  ];
+
+  const countryInfo = {
+    'cn': '中国：历史悠久，地大物博，拥有丰富的文化和美食。',
+    'tw': '中国：历史悠久，地大物博，拥有丰富的文化和美食。', // name fallback
+    'sg': '新加坡：花园城市，融合中西文化，干净有序。',
+    'dk': '丹麦：北欧小国，童话王国。',
+    'au': '澳大利亚：自然风光丰富，拥有袋鼠、大堡礁与悉尼歌剧院。',
+    'gb': '英国：英伦文化发源地，拥有伦敦、牛津和剑桥。',
+    'fr': '法国：浪漫之都，拥有埃菲尔铁塔与卢浮宫，美食与艺术的天堂。',
+    'nl': '荷兰：风车与郁金香之国，阿姆斯特丹水城迷人。',
+    'be': '比利时：巧克力和啤酒之国，拥有布鲁塞尔与中世纪古镇。',
+    'se': '瑞典：北欧森林与设计之美，宜居的福祉社会。',
+    'fi': '芬兰：千湖之国，圣诞老人故乡，教育和自然环境优异。',
+    'ch': '瑞士：阿尔卑斯山与精密钟表的代表，四种官方语言。',
+    'es': '西班牙：热情奔放，弗拉明戈与阳光海滩的国度。',
+    'at': '奥地利：音乐之国，莫扎特故乡与阿尔卑斯山脉环绕。',
+    'hu': '匈牙利：布达佩斯双城，温泉与多瑙河之美。',
+    'cz': '捷克：布拉格的红屋顶与童话般的中世纪城市。',
+    'pt': '葡萄牙：大航海起点，里斯本与波尔图风光迷人。',
+    'eg': '埃及：金字塔与尼罗河文明，古老与神秘并存。',
+    'it': '意大利：文艺复兴发源地，罗马、威尼斯与美食之乡。',
+    'mc': '摩纳哥：地中海畔的奢华小国，一级方程式赛事著名。',
+    'va': '梵蒂冈：世界最小国家，天主教的精神中心与圣彼得大教堂。'
+  };
+
+  // 渲染地图
+  Highcharts.mapChart('container', {
+    chart: {
+      map: 'custom/world'
+    },
+    title: {
+      text: '我去过的国家'
+    },
+    accessibility: {
+      enabled: false
+    },
+    mapNavigation: {
+      enabled: true,
+      buttonOptions: {
+        verticalAlign: 'bottom'
+      }
+    },
+    colorAxis: {
+      min: 0,
+      max: 1,
+      showInLegend: false,
+      stops: [
+        [0, '#eeeeee'],
+        [1, '#DD7631']
+      ]
+    },
+    series: [{
+      data: visitedData,
+      name: 'Visited',
+      color: '#DD7631', 
+      states: {
+        hover: {
+          color: '#DD7631'
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        format: '{point.name}'
+      },
+      point: {
+        events: {
+          mouseOver: function () {
+            const key = this['hc-key']?.toLowerCase();
+            const fallback = this.name?.toLowerCase();
+            const info = countryInfo[this['hc-key']] || '这个国家暂无简介';
+            const box = document.getElementById('infoBox');
+            box.innerHTML = `<strong>${this.name}</strong><br>${info}`;
+            box.style.display = 'block';
+          },
+          mouseOut: function () {
+            document.getElementById('infoBox').style.display = 'none';
+          }
+        }
+      }
+    }]
+  });
+</script>
+</body>
+</html>
