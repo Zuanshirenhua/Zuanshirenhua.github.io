@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>废稿垃圾桶</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', '宋体', serif;
+            cursor: none; /* 隐藏默认鼠标 */
+            color: #4E6851;
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: url('images/698989518cf353440170087e2a68f620.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;     /* ✅ 横向撑满，高度按比例缩放 */
+            background-position: top center;
+            background-attachment: scroll;  /* ✅ 跟着页面滚动 */
+            background-color: #4E6851;      /* 背景底色兜底 */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            width: 100vw;
+            z-index: 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #f4f1e8;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            font-weight: normal;
+            letter-spacing: 3px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #e8e0d0;
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5em;
+            color: #f4f1e8;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+
+        .section-title .subtitle {
+            font-size: 1.1em;
+            color: #d4c4a8;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .divider {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #DCC9A9, transparent);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            width: 8px;
+            height: 8px;
+            background: #d4c4a8;
+            border-radius: 50%;
+        }
+
+        .divider::before {
+            left: -4px;
+        }
+
+        .divider::after {
+            right: -4px;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #B83A2D);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="%23000" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="%23000" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="%23000" opacity="0.1"/><circle cx="70" cy="10" r="1" fill="%23000" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .article-content {
+            padding: 25px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #DCC9A9;
+        }
+
+        .author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #B83A2D);
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .article-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #3a3a3a;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .article-excerpt {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .article-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .stats-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .heart {
+            color: #e74c3c;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .heart:hover {
+            transform: scale(1.2);
+        }
+
+        .section-separator {
+            margin: 100px auto;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            position: relative;
+        }
+
+        .section-separator::before {
+            content: '◆';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #DCC9A9;
+            color: #f4f1e8;
+            padding: 0 15px;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .section-title h2 {
+                font-size: 2em;
+            }
+        }
+
+        .scroll-wrapper {
+            overflow: hidden;
+            width: 100%;
+            padding: 40px 0;
+            position: relative;
+            }
+
+            .scroll-track {
+            display: flex;
+            gap: 30px;
+            animation: scroll-left 30s linear infinite;
+            width: max-content;
+            }
+
+            .scroll-track .article-card {
+            flex: 0 0 350px; /* 不拉伸不压缩，固定宽度为 350px */
+            }
+
+            .scroll-wrapper:hover .scroll-track {
+            animation-play-state: paused;
+            }
+
+            @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+            }
+
+            @keyframes fallDown {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                    opacity: 1;
+                }
+                20% {
+                    transform: translate(-10px, 50px) rotate(-10deg);
+                }
+                40% {
+                    transform: translate(15px, 100px) rotate(15deg);
+                }
+                60% {
+                    transform: translate(-20px, 150px) rotate(-5deg);
+                }
+                80% {
+                    transform: translate(10px, 220px) rotate(10deg);
+                }
+                100% {
+                    transform: translate(-5px, 300px) rotate(0deg);
+                    opacity: 0;
+                }
+                }
+
+                #scarecrowFooter {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                padding: 10px;
+                z-index: 10;  /* 在花朵鼠标下面即可 */
+                }
+
+                #scarecrowImg {
+                    width: 100px;
+                    height: auto;
+                    opacity: 0.9;
+                    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+                    will-change: transform;
+                    backface-visibility: hidden; /* 防止闪烁 */
+                    }
+
+                    #scarecrowImg:hover {
+                    transform: scale(1.1); /* 平时悬停时轻微缩放 */
+                    }
+
+                    #scarecrowImg.flipped {
+                    transform: scaleX(-1) scale(1.5); /* 水平翻转 + 放大 */
+                    }
+
+    </style>
+</head>
+<body>
+    <svg id="flowerCursor" width="100" height="100" viewBox="0 0 100 100" 
+    style="position: fixed; pointer-events: none; z-index: 9999;">
+    <!-- 种子 -->
+    <circle id="seed" cx="50" cy="90" r="6" fill="#7f5539"/>
+
+    <!-- 茎干 -->
+    <line id="stem" x1="50" y1="90" x2="50" y2="50" stroke="#4e6851" stroke-width="3" opacity="0"/>
+
+    <!-- 叶子 -->
+    <ellipse id="leafLeft" cx="42" cy="70" rx="5" ry="3" fill="#4e6851" opacity="0"/>
+    <ellipse id="leafRight" cx="58" cy="70" rx="5" ry="3" fill="#4e6851" opacity="0"/>
+
+    <!-- 花心 -->
+    <circle id="center" cx="50" cy="45" r="9" fill="#6b4226" opacity="0"/>
+
+    <!-- 向日葵花瓣（简化版） -->
+    <g id="petals" opacity="0">
+    <circle cx="50" cy="30" r="4" fill="#f4a261"/>
+    <circle cx="60" cy="35" r="4" fill="#f4a261"/>
+    <circle cx="65" cy="45" r="4" fill="#f4a261"/>
+    <circle cx="60" cy="55" r="4" fill="#f4a261"/>
+    <circle cx="50" cy="60" r="4" fill="#f4a261"/>
+    <circle cx="40" cy="55" r="4" fill="#f4a261"/>
+    <circle cx="35" cy="45" r="4" fill="#f4a261"/>
+    <circle cx="40" cy="35" r="4" fill="#f4a261"/>
+    </g>
+    </svg>
+
+    <div class="container">
+        <header class="header">
+            <h1>废稿垃圾桶</h1>
+            <p>年轻就爱写点尴尬的</p>
+        </header>
+
+        <!-- 随便写写 -->
+        <section class="section">
+            <div class="section-title">
+                <h2>随便写写</h2>
+                <p class="subtitle">最近</p>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="scroll-wrapper">
+                <div class="scroll-track">
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>5天前 · 3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">午后的咖啡馆</h3>
+                            <p class="article-excerpt">阳光透过百叶窗洒在木桌上，形成斑驳的光影。咖啡的香气在空气中缓缓升腾，就像时间一样，看得见却抓不住...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>128</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>5</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1周前 · 2分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">雨夜随想</h3>
+                            <p class="article-excerpt">窗外的雨声像是大自然的白噪音，有一种莫名的安抚力量。在这样的夜晚，思绪总是格外清晰，或许这就是雨夜的魔力...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>96</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>8</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>31</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2周前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">城市的温度</h3>
+                            <p class="article-excerpt">每个城市都有自己的温度，不是气候的温度，而是人情的温度。在钢筋水泥的森林里，寻找那些温暖的角落...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>142</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>12</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>5天前 · 3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">午后的咖啡馆</h3>
+                            <p class="article-excerpt">阳光透过百叶窗洒在木桌上，形成斑驳的光影。咖啡的香气在空气中缓缓升腾，就像时间一样，看得见却抓不住...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>128</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>5</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>23</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1周前 · 2分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">雨夜随想</h3>
+                            <p class="article-excerpt">窗外的雨声像是大自然的白噪音，有一种莫名的安抚力量。在这样的夜晚，思绪总是格外清晰，或许这就是雨夜的魔力...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>96</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>8</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>31</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2周前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">城市的温度</h3>
+                            <p class="article-excerpt">每个城市都有自己的温度，不是气候的温度，而是人情的温度。在钢筋水泥的森林里，寻找那些温暖的角落...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>142</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>12</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-separator"></div>
+
+        <!-- 青春疼痛文学 -->
+        <section class="section">
+            <div class="section-title">
+                <h2>青春疼痛文学</h2>
+                <p class="subtitle">初高中影评随笔</p>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="scroll-wrapper">
+                <div class="scroll-track">
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>3周前 · 6分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">《小时代》观后感：奢华背后的空虚</h3>
+                            <p class="article-excerpt">青春总是要用一些华丽的泡沫来装点，但当泡沫破灭后，我们看到的是什么？是友情的真谛，还是虚荣的本质...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>203</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>18</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>67</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1个月前 · 5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">那些年我们追过的文艺片</h3>
+                            <p class="article-excerpt">十七岁的时候，我以为看懂了《春光乍泄》就看懂了爱情，以为看懂了《花样年华》就看懂了人生。现在想来，那时的我们多么可爱...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>156</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>24</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>89</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1个月前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">青春的疼痛与美好</h3>
+                            <p class="article-excerpt">每个人的青春都有一段疼痛的记忆，那些失恋、友情破裂、考试失利的日子。但正是这些疼痛，让我们的青春变得真实而珍贵...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>178</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>31</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>102</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>3周前 · 6分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">《小时代》观后感：奢华背后的空虚</h3>
+                            <p class="article-excerpt">青春总是要用一些华丽的泡沫来装点，但当泡沫破灭后，我们看到的是什么？是友情的真谛，还是虚荣的本质...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>203</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>18</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>67</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1个月前 · 5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">那些年我们追过的文艺片</h3>
+                            <p class="article-excerpt">十七岁的时候，我以为看懂了《春光乍泄》就看懂了爱情，以为看懂了《花样年华》就看懂了人生。现在想来，那时的我们多么可爱...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>156</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>24</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>89</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1个月前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">青春的疼痛与美好</h3>
+                            <p class="article-excerpt">每个人的青春都有一段疼痛的记忆，那些失恋、友情破裂、考试失利的日子。但正是这些疼痛，让我们的青春变得真实而珍贵...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>178</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>31</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>102</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-separator"></div>
+
+        <!-- 心灵鸡汤 -->
+        <section class="section">
+            <div class="section-title">
+                <h2>芋头语录</h2>
+                <p class="subtitle">小学写的心灵鸡汤</p>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="scroll-wrapper">
+                <div class="scroll-track">
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2天前 · 3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">慢一点，生活会更美</h3>
+                            <p class="article-excerpt">在这个快节奏的时代，我们总是匆匆忙忙，却忘记了欣赏路边的风景。慢下来，你会发现生活中有太多被忽略的美好...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>245</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>16</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>78</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1周前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">每一天都是新的开始</h3>
+                            <p class="article-excerpt">太阳每天都是新的，我们也应该如此。无论昨天有多么糟糕，今天都是一个全新的机会，去成为更好的自己...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>198</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>22</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>95</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2周前 · 5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">相信自己的力量</h3>
+                            <p class="article-excerpt">很多时候，我们低估了自己的能力。其实每个人内心都有一股强大的力量，只是需要时间去发现，需要勇气去释放...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>167</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>19</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>84</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>3周前 · 6分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">《小时代》观后感：奢华背后的空虚</h3>
+                            <p class="article-excerpt">青春总是要用一些华丽的泡沫来装点，但当泡沫破灭后，我们看到的是什么？是友情的真谛，还是虚荣的本质...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>203</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>18</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>67</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1个月前 · 5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">那些年我们追过的文艺片</h3>
+                            <p class="article-excerpt">十七岁的时候，我以为看懂了《春光乍泄》就看懂了爱情，以为看懂了《花样年华》就看懂了人生。现在想来，那时的我们多么可爱...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>156</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>24</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>89</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1个月前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">青春的疼痛与美好</h3>
+                            <p class="article-excerpt">每个人的青春都有一段疼痛的记忆，那些失恋、友情破裂、考试失利的日子。但正是这些疼痛，让我们的青春变得真实而珍贵...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>178</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>31</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>102</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-separator"></div>
+
+        <!-- 心灵鸡汤 -->
+        <section class="section">
+            <div class="section-title">
+                <h2>心灵鸡汤</h2>
+                <p class="subtitle">温暖人心的文字，治愈生活的良药</p>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="scroll-wrapper">
+                <div class="scroll-track">
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2天前 · 3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">慢一点，生活会更美</h3>
+                            <p class="article-excerpt">在这个快节奏的时代，我们总是匆匆忙忙，却忘记了欣赏路边的风景。慢下来，你会发现生活中有太多被忽略的美好...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>245</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>16</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>78</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1周前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">每一天都是新的开始</h3>
+                            <p class="article-excerpt">太阳每天都是新的，我们也应该如此。无论昨天有多么糟糕，今天都是一个全新的机会，去成为更好的自己...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>198</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>22</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>95</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2周前 · 5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">相信自己的力量</h3>
+                            <p class="article-excerpt">很多时候，我们低估了自己的能力。其实每个人内心都有一股强大的力量，只是需要时间去发现，需要勇气去释放...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>167</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>19</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>84</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2天前 · 3分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">慢一点，生活会更美</h3>
+                            <p class="article-excerpt">在这个快节奏的时代，我们总是匆匆忙忙，却忘记了欣赏路边的风景。慢下来，你会发现生活中有太多被忽略的美好...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>245</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>16</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>78</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>1周前 · 4分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">每一天都是新的开始</h3>
+                            <p class="article-excerpt">太阳每天都是新的，我们也应该如此。无论昨天有多么糟糕，今天都是一个全新的机会，去成为更好的自己...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>198</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>22</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>95</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-image"></div>
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="author-avatar">我</div>
+                                <span>2周前 · 5分钟阅读</span>
+                            </div>
+                            <h3 class="article-title">相信自己的力量</h3>
+                            <p class="article-excerpt">很多时候，我们低估了自己的能力。其实每个人内心都有一股强大的力量，只是需要时间去发现，需要勇气去释放...</p>
+                            <div class="article-stats">
+                                <div class="stats-item">
+                                    <span>👁</span>
+                                    <span>167</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span>💬</span>
+                                    <span>19</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="heart">♥</span>
+                                    <span>84</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="flowerTextContainer" style="position: fixed; pointer-events: none; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998;"></div>
+
+    <footer id="scarecrowFooter">
+        <img id="scarecrowImg" src="images/scarecrow.png" alt="稻草人">
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; Ruyan Yu</li><li>Design: Ruyan Yu</li></ul>
+    </div>
+
+    <script>
+        // 爱心点击效果
+        document.querySelectorAll('.heart').forEach(heart => {
+            heart.addEventListener('click', function() {
+                this.style.animation = 'none';
+                this.offsetHeight; // 触发重排
+                this.style.animation = 'heartbeat 0.6s ease';
+                
+                // 增加点赞数
+                const countSpan = this.nextElementSibling;
+                const currentCount = parseInt(countSpan.textContent);
+                countSpan.textContent = currentCount + 1;
+            });
+        });
+
+        // 添加心跳动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes heartbeat {
+                0% { transform: scale(1); }
+                25% { transform: scale(1.3); }
+                50% { transform: scale(1.1); }
+                75% { transform: scale(1.2); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 卡片悬停效果增强
+        document.querySelectorAll('.article-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 初始化动画状态
+        document.querySelectorAll('.article-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+
+
+
+        let stage = 0;
+        const seed = document.getElementById('seed');
+        const stem = document.getElementById('stem');
+        const leafLeft = document.getElementById('leafLeft');
+        const leafRight = document.getElementById('leafRight');
+        const center = document.getElementById('center');
+        const petals = document.getElementById('petals');
+        const flowerTexts = [
+        "“我心中有一簇迎着烈日而生的花”",
+        "“比一切美酒都要芬芳”",
+        "“滚烫的馨香淹过稻草人的胸膛”",
+        "“草扎的精神，从此万寿无疆。”"
+        ];
+
+        const scarecrowImg = document.getElementById("scarecrowImg");
+
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        });
+
+        function dropTextLine(text) {
+            const span = document.createElement("span");
+            span.textContent = text;
+            span.style.position = "fixed";
+            span.style.left = `${mouseX}px`;
+            span.style.top = `${mouseY}px`;
+            span.style.color = "white";
+            span.style.fontSize = "1.4em";
+            span.style.opacity = "1";
+            span.style.zIndex = "9999";
+            span.style.whiteSpace = "nowrap";
+            span.style.pointerEvents = "none";
+            span.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+            span.style.fontSize = `${1 + Math.random() * 0.5}em`;
+            span.style.animation = "fallDown 5s ease-out forwards";
+
+            document.getElementById("flowerTextContainer").appendChild(span);
+            // 抖落效果
+            const offsetX = Math.random() * 100 - 50; // 左右偏移范围 ±50px
+            const offsetY = 250 + Math.random() * 50; // 垂直下降 250-300px
+
+            requestAnimationFrame(() => {
+                span.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${Math.random() * 30 - 15}deg)`;
+                span.style.opacity = "0";
+            });
+
+            setTimeout(() => {
+                span.remove();
+            }, 4500);
+            }
+
+        // 跟随鼠标移动
+        document.addEventListener('mousemove', e => {
+        const cursor = document.getElementById('flowerCursor');
+        cursor.style.left = `${e.clientX - 50}px`;
+        cursor.style.top = `${e.clientY - 50}px`;
+        });
+
+        // 点击变化
+        document.addEventListener('click', () => {
+        stage = (stage + 1) % 8;
+
+        switch(stage) {
+        case 0: // 初始：种子
+            seed.style.opacity = '1';
+            stem.style.opacity = '0';
+            leafLeft.style.opacity = '0';
+            leafRight.style.opacity = '0';
+            center.style.opacity = '0';
+            petals.style.opacity = '0';
+            break;
+
+        case 1: // 发芽：茎长出，种子消失
+            seed.style.opacity = '0';
+            stem.style.opacity = '1';
+            leafLeft.style.opacity = '0';
+            leafRight.style.opacity = '0';
+            center.style.opacity = '0';
+            petals.style.opacity = '0';
+            break;
+
+        case 2: // 长叶
+            leafLeft.style.opacity = '1';
+            leafRight.style.opacity = '1';
+            break;
+
+        case 3: // 开花
+            center.style.opacity = '1';
+            petals.style.opacity = '1';
+            break;
+            }
+
+            if (stage >= 4 && stage <= 7) {
+                dropTextLine(flowerTexts[stage - 4]);
+                }
+        });
+
+
+        // 鼠标移入稻草人图片时
+        scarecrowImg.addEventListener("mouseenter", () => {
+        if (stage >= 3 && stage <= 7) {
+            scarecrowImg.classList.add("flipped");
+            scarecrowImg.src = "images/light.jpg";
+        }
+        });
+
+        // 鼠标移出时恢复
+        scarecrowImg.addEventListener("mouseleave", () => {
+        scarecrowImg.classList.remove("flipped");
+        scarecrowImg.src = "images/scarecrow.png";
+        });
+
+    </script>
+
+    
+</body>
+</html>
