@@ -112,23 +112,6 @@
             color: white;
         }
 
-        #copyright {
-		color: #ffffff;
-		position: relative;
-		color: rgba(255, 255, 255, 0.25);
-		cursor: default;
-		font-family: 'QingNiaoHei',"Source Sans Pro", Helvetica, sans-serif;
-		font-size: 0.8rem;
-		font-weight: 900;
-		letter-spacing: 0.075em;
-		line-height: 1.5;
-		text-align: center;
-		text-transform: uppercase;
-		margin: 4rem auto 8rem auto;
-		width: calc(100% - 4rem);
-		max-width: 72rem;
-		z-index: 2;
-	    }
     </style>
 </head>
 <body>
@@ -153,10 +136,6 @@
             • 点击不同区域查看功能介绍
         </div>
 
-        <!-- Copyright -->
-        <div id="copyright">
-        <ul><li>&copy; Ruyan Yu</li><li>Design: Ruyan Yu</li></ul>
-        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -278,10 +257,6 @@
             fillLight.position.set(-2, 1, 2);
             scene.add(fillLight);
 
-            // 柔和蓝色背光（提轮廓）
-            const backLight = new THREE.DirectionalLight(0x708090, 0.5); // slategray
-            backLight.position.set(-2, -2, -2);
-            scene.add(backLight);
             
             // 射线投射器和鼠标
             raycaster = new THREE.Raycaster();
