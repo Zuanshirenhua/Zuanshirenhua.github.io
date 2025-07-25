@@ -134,6 +134,11 @@
             • 滚轮缩放模型<br>
             • 点击不同区域查看功能介绍
         </div>
+
+        <!-- Copyright -->
+        <div id="copyright">
+        <ul><li>&copy; Ruyan Yu</li><li>Design: Ruyan Yu</li></ul>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -199,8 +204,19 @@
             scene.background = new THREE.Color(0x1a1a2e);
             
             // 创建相机
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 3, 0);
+            const aspect = window.innerWidth / window.innerHeight;
+            const frustumSize = 5;
+
+            camera = new THREE.OrthographicCamera(
+                frustumSize * aspect / -2,
+                frustumSize * aspect / 2,
+                frustumSize / 2,
+                frustumSize / -2,
+                0.1,
+                100
+            );
+            camera.position.set(0, 0.5, -2); // 或根据需要微调
+            camera.lookAt(0, 0, 0);
             
             // 创建渲染器
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -208,24 +224,46 @@
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             document.getElementById('container').appendChild(renderer.domElement);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
 
             // 然后创建控制器
             controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.target.set(0, 0.5, 0);
+            controls.target.set(0, 0, 0);
             controls.update();
             
             // 创建光照
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            // 柔和的环境光
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
             scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(1, 1, 1);
-            directionalLight.castShadow = true;
+
+            // 背光：从摄像机后方向内照
+            const cameraBackLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            cameraBackLight.position.copy(camera.position).normalize();
+            scene.add(cameraBackLight);
+
+            const topLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            topLight.position.set(0, 5, 0); // 顶部垂直向下
+            scene.add(topLight);
+
+            const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.8);
+            scene.add(hemisphereLight);
+
+            // 主方向光（模拟太阳光）
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            directionalLight.position.set(3, 3, 3);
             scene.add(directionalLight);
-            
-            const pointLight = new THREE.PointLight(0x64b5f6, 0.5);
-            pointLight.position.set(-2, 2, 2);
-            scene.add(pointLight);
+
+            // 可选：补光灯（消除阴影）
+            const fillLight = new THREE.PointLight(0xffffff, 0.6);
+            fillLight.position.set(-2, 1, 2);
+            scene.add(fillLight);
+
+            // 柔和蓝色背光（提轮廓）
+            const backLight = new THREE.DirectionalLight(0x708090, 0.5); // slategray
+            backLight.position.set(-2, -2, -2);
+            scene.add(backLight);
             
             // 射线投射器和鼠标
             raycaster = new THREE.Raycaster();
@@ -257,11 +295,33 @@
                 brain = gltf.scene;
 
                 // ✅ 让模型在Y轴或Z轴旋转180度，调整为正面朝上
-                brain.rotation.x = Math.PI;
+                brain.rotation.set(0, Math.PI, 0);
 
                 // ✅ 可选：缩放或居中位置
-                brain.scale.set(1, 1, 1);
-                brain.position.set(0, -0.5, 0);
+                brain.scale.set(0.02, 0.02, 0.02);
+                brain.position.set(0, -1, 0);
+
+                // ✅ 修复模型：遍历所有Mesh，保留原材质，只做以下修复：
+                brain.traverse(function (child) {
+                    if (child.isMesh) {
+                        // 开启双面显示以避免角度变黑
+                        if (child.material) {
+                            child.material.side = THREE.DoubleSide;
+                            child.material.needsUpdate = true;
+                        }
+
+                        // 如果有几何体，重新计算法线
+                        if (child.geometry) {
+                            child.geometry.computeVertexNormals();
+                        }
+
+                        // 若模型贴图曝光过度，可尝试压暗贴图（可选）
+                        if (child.material && child.material.map) {
+                            child.material.map.encoding = THREE.sRGBEncoding;
+                            child.material.map.needsUpdate = true;
+                        }
+                    }
+                });
 
                 scene.add(brain);
                 isLoaded = true;
@@ -330,12 +390,6 @@
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObject(brain, true);
             
-            // 重置所有材质
-            brain.traverse(function(child) {
-                if (child.isMesh && child.userData.originalMaterial) {
-                    child.material.emissive.setHex(0x000000);
-                }
-            });
             
             // 高亮悬停的对象
             if (intersects.length > 0) {
@@ -450,6 +504,7 @@
         
         function animate() {
             requestAnimationFrame(animate);
+            cameraBackLight.position.copy(camera.position).normalize();  // 始终跟随摄像机
             
             // if (brain && isLoaded) {
                 // 轻微的自转动画
