@@ -186,6 +186,24 @@
             background: rgba(128, 0, 255, 0.5);
             transform: scale(1.05);
             }
+
+            #copyright {
+                color: #ffffff;
+                position: relative;
+                color: rgba(255, 255, 255, 0.25);
+                cursor: default;
+                font-family: 'QingNiaoHei',"Source Sans Pro", Helvetica, sans-serif;
+                font-size: 0.8rem;
+                font-weight: 900;
+                letter-spacing: 0.075em;
+                line-height: 1.5;
+                text-align: center;
+                text-transform: uppercase;
+                margin: 4rem auto 8rem auto;
+                width: calc(100% - 4rem);
+                max-width: 72rem;
+                z-index: 2;
+            }
     </style>
 </head>
 
@@ -704,9 +722,9 @@
             const shufflePromises = cards.map((card, index) => {
                 return new Promise((resolve) => {
                     const t = Date.now() * 0.001 + index * 10;
-                    const randomX = Math.sin(t * 1.3) * 25 + (Math.random() - 0.5) * 10;
-                    const randomY = Math.cos(t * 1.5) * 15 + (Math.random() - 0.5) * 8;
-                    const randomZ = Math.sin(t * 1.1) * 10 + (Math.random() - 0.5) * 6;
+                    const randomX = Math.sin(t * 1.3) * 10 + (Math.random() - 0.5) * 4;
+                    const randomY = Math.cos(t * 1.5) * 4 + (Math.random() - 0.5) * 2;
+                    const randomZ = Math.sin(t * 1.1) * 5 + (Math.random() - 0.5) * 2;
                     const randomRotation = new THREE.Vector3(
                         (Math.random() - 0.5) * Math.PI,
                         Math.PI + (Math.random() - 0.5) * 0.6,
